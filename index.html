@@ -75,7 +75,7 @@
       font-size: 12px;
       font-style: italic;
     }
-    
+
     /* 計算器區域 */
     .calculator-section {
       background-color: #fff4fa;
@@ -213,6 +213,23 @@
         padding: 25px;
       }
     }
+
+    .hidden {
+        display: none;
+        } 
+
+    .spacer {
+        height: 20px; /* 可依需求調整間距 */
+    }
+
+    .mode-toggle {
+        display: flex;
+        gap: 10px; /* 按鈕之間的間距，可調整 */
+        justify-content: center; /* 讓按鈕置中，如果你希望靠左對齊可改成 flex-start */
+        margin-top: 20px;
+    }
+
+
   </style>
 </head>
 <body>
@@ -246,10 +263,19 @@
     </p>
   </div>
 
+  <!-- 模式切換 -->
+  <div class="mode-toggle">
+      <button id="stayModeBtn" class="active" onclick="switchMode('stay')">住宿模式</button>
+      <button id="homeModeBtn" onclick="switchMode('home')">到府模式</button>
+  </div>
+
+  <!-- 空白間距 -->
+    <div class="spacer"></div>
+
   <!-- 計算器區域 -->
-  <div class="calculator-section">
+  <div id="stayCalculator" class="calculator-section">
     <button class="clear-btn" onclick="clearAll()">🧹 清除所有欄位</button>
-    <h2>🐾 住宿金額計算機</h2>
+    <h2> 🏠 住宿金額計算機</h2>
 
     <label>🗓️ 開始日期</label>
     <input type="date" id="startDate">
@@ -273,6 +299,51 @@
     <button class="clear-btn" onclick="clearAll()">🧹 清除所有欄位</button>
   </div>
 
+  <!-- 到府金額計算機 -->
+  <div id="homeCalculator" class="calculator-section hidden">
+    <button class="clear-btn" onclick="clearAll()">🧹 清除所有欄位</button>
+    <h2>🐾到府金額計算機</h2>
+
+    <label>🗓️ 開始日期</label>
+    <input type="date" id="homeStartDate">
+
+    <label>☀️ 開始時段</label>
+    <select id="homeStartPeriod">
+      <option value="am">上午</option>
+      <option value="noon">中午</option>
+      <option value="pm">下午</option>
+    </select>
+
+    <label>🗓️ 結束日期</label>
+    <input type="date" id="homeEndDate">
+
+    <label>🌇 結束時段</label>
+    <select id="homeEndPeriod">
+      <option value="am">上午</option>
+      <option value="noon">中午</option>
+      <option value="pm">下午</option>
+    </select>
+
+    <label>⏱️ 每次到府時間（分鐘）</label>
+    <select id="visitMinutes">
+      <option value="30">30</option>
+      <option value="60">60</option>
+    </select>
+
+    <label>🔁 每天幾次</label>
+    <input type="number" id="visitsPerDay" min="1" value="1">
+
+    <label>💰 每半小時金額（元）</label>
+    <input type="number" id="pricePerHalfHour" min="0">
+
+    <label>🎫 折扣（例如 0.8 為八折）</label>
+    <input type="number" id="homeDiscount" min="0" max="1" step="0.01" placeholder="1 或 0.8" value="1">
+
+    <button onclick="calculateHome()">🧮 計算費用</button>
+    <button class="clear-btn" onclick="clearAll()">🧹 清除所有欄位</button>
+  </div>
+
+
   <!-- Modal 彈出視窗 -->
   <div id="modal" class="modal">
     <div class="modal-content">
@@ -295,7 +366,7 @@
       
       // 設定結束日期為明天
       const tomorrow = new Date(today);
-      tomorrow.setDate(today.getDate() + 1);
+      tomorrow.setDate(today.getDate());
       const tomorrowYear = tomorrow.getFullYear();
       const tomorrowMonth = String(tomorrow.getMonth() + 1).padStart(2, '0');
       const tomorrowDay = String(tomorrow.getDate()).padStart(2, '0');
@@ -304,8 +375,9 @@
     }
 
     // 頁面載入時設定預設日期
-    window.onload = function() {
-      setDefaultDates();
+    window.onload = function () {
+        setDefaultDates();
+        switchMode('stay'); // 預設住宿
     };
 
     function calculate() {
@@ -389,6 +461,94 @@
     window.onkeydown = function(e) {
       if (e.key === "Escape") closeModal();
     }
+    // 模式切換邏輯
+function switchMode(mode) {
+  const stayBtn = document.getElementById("stayModeBtn");
+  const homeBtn = document.getElementById("homeModeBtn");
+  const stayCalc = document.getElementById("stayCalculator");
+  const homeCalc = document.getElementById("homeCalculator");
+
+  if (mode === 'stay') {
+    stayBtn.classList.add("active");
+    homeBtn.classList.remove("active");
+    stayCalc.classList.remove("hidden");
+    homeCalc.classList.add("hidden");
+  } else {
+    stayBtn.classList.remove("active");
+    homeBtn.classList.add("active");
+    stayCalc.classList.add("hidden");
+    homeCalc.classList.remove("hidden");
+  }
+}
+
+// 到府金額計算
+function calculateHome() {
+  const startDateStr = document.getElementById("homeStartDate").value;
+  const endDateStr = document.getElementById("homeEndDate").value;
+  const startPeriod = document.getElementById("homeStartPeriod").value;
+  const endPeriod = document.getElementById("homeEndPeriod").value;
+  const visitMinutes = parseInt(document.getElementById("visitMinutes").value);
+  const visitsPerDay = parseInt(document.getElementById("visitsPerDay").value);
+  const pricePerHalfHour = parseFloat(document.getElementById("pricePerHalfHour").value);
+  const discount = parseFloat(document.getElementById("homeDiscount").value);
+
+  if (!startDateStr || !endDateStr || isNaN(visitMinutes) || isNaN(visitsPerDay) || isNaN(pricePerHalfHour) || isNaN(discount)) {
+    showModal("⚠️ 請填寫所有欄位並輸入正確數值");
+    return;
+  }
+
+  const startDate = new Date(startDateStr);
+  const endDate = new Date(endDateStr);
+  if (endDate < startDate) {
+    showModal("⚠️ 結束日期不可早於開始日期");
+    return;
+  }
+
+  // 根據時段調整天數
+  let dayDiff = (endDate - startDate) / (1000 * 60 * 60 * 24);
+  if (startPeriod === 'pm' && endPeriod === 'am') {
+    dayDiff += 0;
+  } else if (startPeriod === 'am' && endPeriod === 'pm') {
+    dayDiff += 1;
+  } else {
+    dayDiff += 0.5;
+  }
+
+  const totalMinutes = visitMinutes * visitsPerDay * dayDiff;
+  const rawTotal = (totalMinutes / 30) * pricePerHalfHour;
+  const finalTotal = rawTotal * discount;
+
+  showModal(
+    `🏠 <b style="color:#d72660;">到府計算結果</b><br><br>` +
+    `📅 共 <b>${dayDiff}</b> 天，平均每日 ${visitsPerDay} 次<br>` +
+    `⏱️ 每次 ${visitMinutes} 分鐘，共 ${totalMinutes} 分鐘<br><br>` +
+    `💰 原價 <b>${rawTotal.toLocaleString()}</b> 元<br><br>` +
+    `🎫 折扣後總金額：<br><b style="font-size:22px;color:#d72660">${finalTotal.toLocaleString()}</b> 元<br><br>` +
+    `<button class="confirm-btn" onclick="shareResult('到府', ${finalTotal})">📤 分享結果</button><br><br>` +
+    `<small style="color:#888;">謝謝您選擇風滾草工作室 🌿</small>`
+  );
+  }
+
+  // 分享功能
+  function shareResult(mode, amount) {
+    const message = `🐾 ${mode}服務報價：${amount.toLocaleString()} 元\n－來自風滾草計算機`;
+    if (navigator.share) {
+      navigator.share({
+        title: "風滾草服務報價",
+        text: message,
+        url: window.location.href
+      }).catch(err => console.warn("分享取消", err));
+    } else {
+      alert("您的裝置不支援分享功能");
+    }
+   }
+
+   window.addEventListener('DOMContentLoaded', () => {
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('homeStartDate').value = today;
+    document.getElementById('homeEndDate').value = today;
+    });
+
   </script>
 </body>
 </html>
