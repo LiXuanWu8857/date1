@@ -198,21 +198,6 @@
       background-color: #b61a49;
     }
     
-    /* 響應式設計 */
-    @media (max-width: 600px) {
-      .service-values {
-        flex-direction: column;
-      }
-      
-      .brand-title {
-        font-size: 24px;
-      }
-      
-      .modal-content {
-        margin: 15% auto;
-        padding: 25px;
-      }
-    }
 
     .hidden {
         display: none;
@@ -223,12 +208,32 @@
     }
 
     .mode-toggle {
-        display: flex;
-        gap: 10px; /* 按鈕之間的間距，可調整 */
-        justify-content: center; /* 讓按鈕置中，如果你希望靠左對齊可改成 flex-start */
-        margin-top: 20px;
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      margin-top: 20px;
     }
 
+    .mode-toggle button {
+      flex: 1 1 0;
+      min-width: 120px;
+      max-width: 220px;
+      width: auto;
+      margin: 0;
+    }
+
+    @media (max-width: 600px) {
+      .mode-toggle {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+      }
+      .mode-toggle button {
+        width: 100%;
+        min-width: unset;
+        max-width: unset;
+      }
+    }
 
   </style>
 </head>
