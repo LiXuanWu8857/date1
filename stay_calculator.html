@@ -110,9 +110,23 @@
     
     // --- 截圖並分享 ---
     async function shareScreenshot() {
+      const shareBtn = document.querySelector('#modalContent button[onclick="shareScreenshot()"]');
+      const confirmBtn = document.querySelector('#modalContent button[onclick="closeModal()"]');
+    
+      // 暫時隱藏按鈕
+      shareBtn.style.display = 'none';
+      confirmBtn.style.display = 'none';
+    
+      // 截圖
       const target = document.getElementById('modalContent');
       const canvas = await html2canvas(target, { scale: 2, backgroundColor: null });
       const dataUrl = canvas.toDataURL('image/png');
+    
+      // 恢復按鈕顯示
+      shareBtn.style.display = '';
+      confirmBtn.style.display = '';
+    
+      // 分享或下載
       const res = await fetch(dataUrl);
       const blob = await res.blob();
       const file = new File([blob], 'result.png', { type: 'image/png' });
@@ -129,4 +143,5 @@
   </script>
 </body>
 </html>
+
 
