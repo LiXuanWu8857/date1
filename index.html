@@ -18,7 +18,21 @@
       margin: 0;
       line-height: 1.6;
     }
-    .brand-header { text-align: center; background-color: #fff4fa; padding: 30px 20px; border-radius: 15px; margin-bottom: 15px; border: 2px solid #d72660; box-shadow: 0 5px 15px rgba(215, 38, 96, 0.1);}
+    .brand-header {
+  text-align: center;
+  background-color: #fff4fa;
+  padding: 20px 20px; /* 原本上下30px → 改為20px */
+  border-radius: 15px;
+  margin-bottom: 10px; /* 原本15px → 改為10px */
+  border: 2px solid #d72660;
+  box-shadow: 0 5px 15px rgba(215, 38, 96, 0.1);
+}
+
+/* 標題內文預設 margin-bottom 過大，直接歸零 */
+.brand-header h1,
+.brand-header h2 {
+  margin-bottom: 0;
+}
     .brand-title { color: #d72660; font-size: 28px; margin-bottom: 15px; font-weight: bold; }
     .brand-subtitle { color: #d72660; font-size: 18px; margin-bottom: 20px; }
     .brand-description { color: #666; font-size: 14px; margin-bottom: 20px; line-height: 1.8; }
