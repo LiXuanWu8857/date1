@@ -43,7 +43,7 @@
     .mode-toggle {
       display: flex;
       flex-direction: column;
-      gap: 15px; /* 按鈕間距 */
+      gap: 5px; /* 按鈕間距 */
       margin-bottom: 15px; /* 與下方計算機區塊間距 */
     }
     #stayCalculator,
@@ -141,7 +141,7 @@
       const blob = await res.blob();
       const file = new File([blob], 'result.png', { type: 'image/png' });
       if (navigator.canShare && navigator.canShare({ files: [file] })) {
-        await navigator.share({ files: [file], title: '風滾草服務報價', text: '這是您的報價截圖' });
+        await navigator.share({ files: [file], title: '風滾草服務報價'});
       } else {
         const link = document.createElement('a');
         link.href = dataUrl;
