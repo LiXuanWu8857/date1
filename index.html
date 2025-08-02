@@ -141,7 +141,7 @@
       const blob = await res.blob();
       const file = new File([blob], 'result.png', { type: 'image/png' });
       if (navigator.canShare && navigator.canShare({ files: [file] })) {
-        await navigator.share({ files: [file], title: '風滾草服務報價'});
+        await navigator.share({ files: [file]});
       } else {
         const link = document.createElement('a');
         link.href = dataUrl;
