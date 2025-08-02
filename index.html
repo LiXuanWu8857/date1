@@ -96,7 +96,7 @@
 
   <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
   <script>
-    function setDefaultDates(){const t=new Date,e=t.getFullYear(),a=String(t.getMonth()+1).padStart(2,"0"),n=String(t.getDate()).padStart(2,"0");document.getElementById("startDate").value=`${e}-${a}-${n}`;const o=new Date(t);o.setDate(t.getDate()+1);const d=o.getFullYear(),c=String(o.getMonth()+1).padStart(2,"0"),l=String(o.getDate()).padStart(2,"0");document.getElementById("endDate").value=`${d}-${c}-${l}`;}
+    function setDefaultDates(){const t=new Date,e=t.getFullYear(),a=String(t.getMonth()+1).padStart(2,"0"),n=String(t.getDate()-1).padStart(2,"0");document.getElementById("startDate").value=`${e}-${a}-${n}`;const o=new Date(t);o.setDate(t.getDate()+1);const d=o.getFullYear(),c=String(o.getMonth()+1).padStart(2,"0"),l=String(o.getDate()).padStart(2,"0");document.getElementById("endDate").value=`${d}-${c}-${l}`;}
     window.onload=setDefaultDates;
 
     function calculate(){const t=document.getElementById("startDate").value,e=document.getElementById("startTime").value,a=document.getElementById("endDate").value,n=document.getElementById("endTime").value,o=parseFloat(document.getElementById("rate").value),d=parseFloat(document.getElementById("discount").value);if(!t||!a||!e||!n||isNaN(o)||isNaN(d)||o<0||d<=0)return showModal("⚠️ 請填寫所有欄位並輸入正確數值");const c=new Date(`${t}T${e}`),l=new Date(`${a}T${n}`);if(l<=c)return showModal("⚠️ 結束時間必須晚於開始時間");const u=l-c,s=1e3*60*60*24,r=Math.floor(u/s),m=u%s/36e5;let i=0;i=m>12?1:m>0?.5:0;const y=r+i,h=y*o,v=h*d;showModal(`🐾 <b style="color:#d72660;">住宿計算結果</b><br><br>🛏️ 共 <b>${y}</b> 天（含加成 <b>${i}</b> 天）<br><br>💰 原價 <b>${h.toLocaleString()}</b> 元<br><br>🎫 折扣後總金額：<br><b style="font-size:22px;color:#d72660">${v.toLocaleString()}</b> 元<br><br><small style="color:#888;">謝謝您選擇風滾草工作室 🌿</small>`);}
@@ -129,3 +129,4 @@
   </script>
 </body>
 </html>
+
