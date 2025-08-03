@@ -90,21 +90,24 @@
     }
     
     .extra-item .extraName1,
-    .extra-item .extraAmount1,
     .extra-item .extraName2,
-    .extra-item .extraAmount2,
     .extra-item .homeExtraName1,
+    .extra-item .homeExtraName2 {
+      flex: 2; /* 名稱欄位寬一點 */
+    }
+    
+    .extra-item .extraAmount1,
+    .extra-item .extraAmount2,
     .extra-item .homeExtraAmount1,
-    .extra-item .homeExtraName2,
     .extra-item .homeExtraAmount2 {
-      flex: 1;
+      flex: 1.5; /* 金額中等寬 */
     }
     
     .extra-item .extraDiscount1,
-    .extra-item .extraDiscount2 
+    .extra-item .extraDiscount2,
     .extra-item .homeExtraDiscount1,
     .extra-item .homeExtraDiscount2 {
-      flex: 0.5;
+      flex: 1; /* 折扣最窄 */
     }
     
     .date-period-row {
