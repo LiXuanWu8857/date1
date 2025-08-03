@@ -49,7 +49,7 @@
     button:hover { background-color: #d72660; transform: translateY(-2px); box-shadow: 0 4px 8px rgba(215, 38, 96, 0.3);}
     .clear-btn { background-color: #f7b2d9; color: #d72660; margin-bottom: 15px; margin-top: 10px;}
     .clear-btn:hover { background-color: #d72660; color: #fff; }
-    .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(215, 38, 96, 0.15);}
+    .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 90%; height: 100%; background-color: rgba(215, 38, 96, 0.15);}
     .modal-content { background-color: #fff4fa; margin: 8% auto; padding: 35px; border: 3px solid #d72660; border-radius: 20px; width: 90%; max-width: 450px; text-align: center; box-shadow: 0 15px 35px rgba(215, 38, 96, 0.2); color: #d72660; font-size: 18px; letter-spacing: 1px; position: relative; }
     .confirm-btn { margin-top: 25px; width: 70%; background-color: #d72660; color: #fff; font-size: 18px; border-radius: 10px; border: none; padding: 12px 0; font-weight: bold;}
     .confirm-btn:hover { background-color: #b61a49; }
@@ -153,18 +153,19 @@
     
     .modal-content {
       width: 90%;
-      max-width: 450px;
-      word-wrap: break-word; /* 斷字換行 */
-      overflow-wrap: break-word; /* 新式瀏覽器 */
-      font-size: 16px; /* 手機適配字體稍微小一點 */
+      max-width: 380px;
+      font-size: 15px;
+      padding: 18px 10px;
+      margin: 15% auto;
     }
-
     @media (max-width: 480px) {
       .modal-content {
-        width: 95%;
-        margin: 15% auto;
-        font-size: 14px;
-        padding: 25px; /* 減少內邊距 */
+        width: 98%;
+        max-width: 98vw;
+        padding: 8px 2px;
+        margin: 8% auto;
+        font-size: 13px;
+        border-radius: 12px;
       }
     }
   </style>
