@@ -83,6 +83,7 @@
     #homeCalculator {
       margin-top: 0; /* 移除額外間距 */
     }
+    
     .extra-item {
       display: flex;
       gap: 10px;
@@ -109,6 +110,10 @@
     .extra-item .homeExtraDiscount2 {
       flex: 1; /* 折扣最窄 */
     }
+    @media (max-width: 480px) {
+      .extra-item {
+        flex-direction: column;
+      }
     
     .date-period-row {
       display: flex;
@@ -124,6 +129,25 @@
       min-width: 100px;
     }
     
+        .date-time-row {
+      display: flex;
+      gap: 10px;
+    }
+    
+    .date-time-row .date-field {
+      flex: 2;  /* 日期比較大 */
+    }
+    
+    .date-time-row .time-field {
+      flex: 1;  /* 時間比較小 */
+    }
+    
+    /* 手機版調整，避免擠壓 */
+    @media (max-width: 480px) {
+      .date-time-row {
+        flex-direction: column;
+      }
+    }
   </style>
 </head>
 <body>
@@ -178,11 +202,31 @@
   <!-- 住宿計算機 -->
 <div id="stayCalculator" class="calculator-section">
   <button class="clear-btn" onclick="clearAll()">🧹 清除所有欄位</button>
-  <h2>🏠 住宿金額計算機</h2>
-  <label>🗓️ 開始日期</label><input type="date" id="startDate">
-  <label>🕒 開始時間</label><input type="time" id="startTime" value="15:00">
-  <label>🗓️ 結束日期</label><input type="date" id="endDate">
-  <label>🕒 結束時間</label><input type="time" id="endTime" value="11:00">
+<h2>🏠 住宿金額計算機</h2>
+
+<!-- 開始 -->
+<div class="date-time-row">
+  <div class="date-field">
+    <label>🗓️ 開始日期</label>
+    <input type="date" id="startDate">
+  </div>
+  <div class="time-field">
+    <label>🕒 開始時間</label>
+    <input type="time" id="startTime" value="15:00">
+  </div>
+</div>
+
+<!-- 結束 -->
+<div class="date-time-row">
+  <div class="date-field">
+    <label>🗓️ 結束日期</label>
+    <input type="date" id="endDate">
+  </div>
+  <div class="time-field">
+    <label>🕒 結束時間</label>
+    <input type="time" id="endTime" value="11:00">
+  </div>
+</div>
   <label>💰 每日金額</label><input type="number" id="rate" min="0" placeholder="例如：1200">
   <label>🎫 折扣</label><input type="number" id="discount" min="0" max="1" step="0.01" value="1">
 
