@@ -89,8 +89,29 @@
       margin-bottom: 10px;
     }
     
-    .extra-item input {
+    .extra-item .extraName1
+    .extra-item .extraAmount1
+    .extra-item .extraName2
+    .extra-item .extraAmount2
       flex: 1;
+    }
+    
+    .extra-item .extraDiscount1
+    .extra-itsm .extraDiscount2
+      flex: 0.5;
+    }
+    
+    .date-period-row {
+      display: flex;
+      gap: 10px;
+    }
+    
+    .date-field {
+      flex: 2; /* 日期比較大 */
+    }
+    
+    .period-field {
+      flex: 1; /* 時段比較小 */
     }
   </style>
 </head>
@@ -172,10 +193,42 @@
 <div id="homeCalculator" class="calculator-section hidden">
   <button class="clear-btn" onclick="clearAll()">🧹 清除所有欄位</button>
   <h2>🐾 到府金額計算機</h2>
-  <label>🗓️ 開始日期</label><input type="date" id="homeStartDate">
+ <!--<label>🗓️ 開始日期</label><input type="date" id="homeStartDate">
   <label>☀️ 開始時段</label><select id="homeStartPeriod"><option value="am">上午</option><option value="noon">中午</option><option value="pm">下午</option></select>
   <label>🗓️ 結束日期</label><input type="date" id="homeEndDate">
   <label>🌇 結束時段</label><select id="homeEndPeriod"><option value="am">上午</option><option value="noon">中午</option><option value="pm">下午</option></select>
+  -->
+  <!-- 開始 -->
+<div class="date-period-row">
+  <div class="date-field">
+    <label>🗓️ 開始日期</label>
+    <input type="date" id="homeStartDate">
+  </div>
+  <div class="period-field">
+    <label>☀️ 開始時段</label>
+    <select id="homeStartPeriod">
+      <option value="am">上午</option>
+      <option value="noon">中午</option>
+      <option value="pm">下午</option>
+    </select>
+  </div>
+</div>
+
+<!-- 結束 -->
+<div class="date-period-row">
+  <div class="date-field">
+    <label>🗓️ 結束日期</label>
+    <input type="date" id="homeEndDate">
+  </div>
+  <div class="period-field">
+    <label>🌇 結束時段</label>
+    <select id="homeEndPeriod">
+      <option value="am">上午</option>
+      <option value="noon">中午</option>
+      <option value="pm">下午</option>
+    </select>
+  </div>
+</div>
   <label>⏱️ 每次到府時間（分鐘）</label><select id="visitMinutes"><option value="30">30</option><option value="60">60</option></select>
   <label>🔁 每天幾次</label><input type="number" id="visitsPerDay" min="1" value="1">
   <label>💰 每半小時金額</label><input type="number" id="pricePerHalfHour" min="0">
