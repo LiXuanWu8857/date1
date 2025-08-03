@@ -89,15 +89,21 @@
       margin-bottom: 10px;
     }
     
-    .extra-item .extraName1
-    .extra-item .extraAmount1
-    .extra-item .extraName2
-    .extra-item .extraAmount2
+    .extra-item .extraName1,
+    .extra-item .extraAmount1,
+    .extra-item .extraName2,
+    .extra-item .extraAmount2,
+    .extra-item .homeExtraName1,
+    .extra-item .homeExtraAmount1,
+    .extra-item .homeExtraName2,
+    .extra-item .homeExtraAmount2 {
       flex: 1;
     }
     
-    .extra-item .extraDiscount1
-    .extra-itsm .extraDiscount2
+    .extra-item .extraDiscount1,
+    .extra-item .extraDiscount2 
+    .extra-item .homeExtraDiscount1,
+    .extra-item .homeExtraDiscount2 {
       flex: 0.5;
     }
     
@@ -191,7 +197,7 @@
 
 <!-- 到府計算機 -->
 <div id="homeCalculator" class="calculator-section hidden">
-  <button class="clear-btn" onclick="clearAll()">🧹 清除所有欄位</button>
+  <button class="clear-btn" onclick="clearHome()">🧹 清除所有欄位</button>
   <h2>🐾 到府金額計算機</h2>
  <!--<label>🗓️ 開始日期</label><input type="date" id="homeStartDate">
   <label>☀️ 開始時段</label><select id="homeStartPeriod"><option value="am">上午</option><option value="noon">中午</option><option value="pm">下午</option></select>
@@ -363,7 +369,14 @@
 
     function showModal(t){document.getElementById("modalResultText").innerHTML=t,document.getElementById("modal").style.display="block",document.body.style.overflow="hidden";}
     function closeModal(){document.getElementById("modal").style.display="none",document.body.style.overflow="auto";}
-    function clearAll(){document.getElementById("startDate").value="",document.getElementById("startTime").value="15:00",document.getElementById("endDate").value="",document.getElementById("endTime").value="11:00",document.getElementById("rate").value="",document.getElementById("discount").value="1",setDefaultDates();}
+    function clearAll(){document.getElementById("startDate").value="",document.getElementById("startTime").value="15:00",document.getElementById("endDate").value="",document.getElementById("endTime").value="11:00",document.getElementById("rate").value="",document.getElementById("discount").value="1",setDefaultDates();
+  document.getElementById("extraName1").value = "";
+  document.getElementById("extraAmount1").value = "";  
+  document.getElementById("extraDiscount1").value = 1;
+  document.getElementById("extraName2").value = "";
+  document.getElementById("extraAmount2").value = "";  
+  document.getElementById("extraDiscount2").value = 1;
+    }
 
     function clearHome() {
   document.getElementById("homeStartDate").value = "";
@@ -374,6 +387,10 @@
   document.getElementById("visitsPerDay").value = 1;
   document.getElementById("pricePerHalfHour").value = "";
   document.getElementById("homeDiscount").value = 1;
+  document.getElementById("homeExtraName1").value = "";
+  document.getElementById("homeExtraAmount1").value = "";  document.getElementById("homeExtraDiscount1").value = 1;
+  document.getElementById("homeExtraName2").value = "";
+  document.getElementById("homeExtraAmount2").value = "";  document.getElementById("homeExtraDiscount2").value = 1;
 }
             document.getElementById("modal").onclick=function(t){t.target===document.getElementById("modal")&&closeModal();}
     window.onkeydown=function(t){"Escape"===t.key&&closeModal();}
