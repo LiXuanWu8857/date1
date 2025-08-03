@@ -357,48 +357,61 @@
 /*
     function calculate(){const t=document.getElementById("startDate").value,e=document.getElementById("startTime").value,a=document.getElementById("endDate").value,n=document.getElementById("endTime").value,o=parseFloat(document.getElementById("rate").value),d=parseFloat(document.getElementById("discount").value);if(!t||!a||!e||!n||isNaN(o)||isNaN(d)||o<0||d<=0)return showModal("⚠️ 請填寫所有欄位並輸入正確數值");const c=new Date(`${t}T${e}`),l=new Date(`${a}T${n}`);if(l<=c)return showModal("⚠️ 結束時間必須晚於開始時間");const u=l-c,s=1e3*60*60*24,r=Math.floor(u/s),m=u%s/36e5;let i=0;i=m>12?1:m>0?.5:0;const y=r+i,h=y*o,v=h*d;showModal(`🐾 <b style="color:#d72660;">住宿計算結果</b><br><br>🛏️ 共 <b>${y}</b> 天（含加成 <b>${i}</b> 天）<br><br>💰 原價 <b>${h.toLocaleString()}</b> 元<br><br>🎫 折扣後總金額：<br><b style="font-size:22px;color:#d72660">${v.toLocaleString()}</b> 元<br><br><small style="color:#888;">謝謝您選擇風滾草工作室 🌿</small>`);}*/
 
-    function calculate(){
+function calculate() {
   const t = document.getElementById("startDate").value;
   const e = document.getElementById("startTime").value;
   const a = document.getElementById("endDate").value;
   const n = document.getElementById("endTime").value;
   const o = parseFloat(document.getElementById("rate").value);
   const d = parseFloat(document.getElementById("discount").value);
-  if(!t||!a||!e||!n||isNaN(o)||isNaN(d)||o<0||d<=0)
+
+  if (!t || !a || !e || !n || isNaN(o) || isNaN(d) || o < 0 || d <= 0)
     return showModal("⚠️ 請填寫所有欄位並輸入正確數值");
 
   const c = new Date(`${t}T${e}`);
   const l = new Date(`${a}T${n}`);
-  if(l<=c) return showModal("⚠️ 結束時間必須晚於開始時間");
+  if (l <= c) return showModal("⚠️ 結束時間必須晚於開始時間");
 
-  const u = l-c;
-  const s = 1000*60*60*24;
-  const r = Math.floor(u/s);
-  const m = (u % s)/3600000;
-  const addDay = m>12?1:(m>0?0.5:0);
-  const totalDays = r+addDay;
+  const u = l - c;
+  const s = 1000 * 60 * 60 * 24;
+  const r = Math.floor(u / s);
+  const m = (u % s) / 3600000;
+  const addDay = m > 12 ? 1 : (m > 0 ? 0.5 : 0);
+  const totalDays = r + addDay;
+
   const basePrice = totalDays * o;
   const totalBase = basePrice * d;
 
-  // 雜項計算
-  const extra1 = (parseFloat(document.getElementById("extraAmount1").value)||0) *
-                 (parseFloat(document.getElementById("extraDiscount1").value)||1);
-  const extra2 = (parseFloat(document.getElementById("extraAmount2").value)||0) *
-                 (parseFloat(document.getElementById("extraDiscount2").value)||1);
+  // 雜項明細
+  let extrasText = "";
+  const extra1Name = document.getElementById("extraName1").value.trim();
+  const extra1Amount = parseFloat(document.getElementById("extraAmount1").value) || 0;
+  const extra1Discount = parseFloat(document.getElementById("extraDiscount1").value) || 1;
+  const extra1Total = extra1Amount * extra1Discount;
+  if (extra1Name) extrasText += `${extra1Name}：${extra1Total.toLocaleString()} 元<br>`;
 
-  const finalPrice = totalBase + extra1 + extra2;
+  const extra2Name = document.getElementById("extraName2").value.trim();
+  const extra2Amount = parseFloat(document.getElementById("extraAmount2").value) || 0;
+  const extra2Discount = parseFloat(document.getElementById("extraDiscount2").value) || 1;
+  const extra2Total = extra2Amount * extra2Discount;
+  if (extra2Name) extrasText += `${extra2Name}：${extra2Total.toLocaleString()} 元<br>`;
 
-  showModal(`🐾 <b style="color:#d72660;">住宿計算結果</b><br><br>
+  const finalPrice = totalBase + extra1Total + extra2Total;
+
+  showModal(`
+    🐾 <b style="color:#d72660;">住宿計算結果</b><br><br>
     🛏️ 共 <b>${totalDays}</b> 天（含加成 <b>${addDay}</b> 天）<br><br>
-    💰 原價 <b>${basePrice.toLocaleString()}</b> 元<br><br>
-    🎫 折扣後總金額 + 雜項：<br>
+    💰 原價 <b>${basePrice.toLocaleString()}</b> 元<br>
+    🎫 折扣後金額：<b>${totalBase.toLocaleString()}</b> 元<br><br>
+    ${extrasText ? `<b>雜項：</b><br>${extrasText}<br>` : ""}
     <b style="font-size:22px;color:#d72660">${finalPrice.toLocaleString()}</b> 元<br><br>
-    <small style="color:#888;">謝謝您選擇風滾草工作室 🌿</small>`);
+    <small style="color:#888;">謝謝您選擇風滾草工作室 🌿</small>
+  `);
 }
 
     /*function calculateHome(){const t=document.getElementById("homeStartDate").value,e=document.getElementById("homeEndDate").value,a=document.getElementById("homeStartPeriod").value,n=document.getElementById("homeEndPeriod").value,o=parseInt(document.getElementById("visitMinutes").value),d=parseInt(document.getElementById("visitsPerDay").value),c=parseFloat(document.getElementById("pricePerHalfHour").value),l=parseFloat(document.getElementById("homeDiscount").value);if(!t||!e||isNaN(o)||isNaN(d)||isNaN(c)||isNaN(l))return showModal("⚠️ 請填寫所有欄位並輸入正確數值");const u=new Date(t),s=new Date(e);if(s<u)return showModal("⚠️ 結束日期不可早於開始日期");let r=(s-u)/864e5;r+="pm"===a&&"am"===n?0:"am"===a&&"pm"===n?1:.5;const m=o*d*r,i=m/30*c,y=i*l;showModal(`🏠 <b style="color:#d72660;">到府計算結果</b><br><br>📅 共 <b>${r}</b> 天，平均每日 ${d} 次<br>⏱️ 每次 ${o} 分鐘，共 ${m} 分鐘<br><br>💰 原價 <b>${i.toLocaleString()}</b> 元<br><br>🎫 折扣後總金額：<br><b style="font-size:22px;color:#d72660">${y.toLocaleString()}</b> 元<br><br><small style="color:#888;">謝謝您選擇風滾草工作室 🌿</small>`);}*/
     
-    function calculateHome(){
+function calculateHome() {
   const t = document.getElementById("homeStartDate").value;
   const e = document.getElementById("homeEndDate").value;
   const a = document.getElementById("homeStartPeriod").value;
@@ -407,32 +420,44 @@
   const d = parseInt(document.getElementById("visitsPerDay").value);
   const c = parseFloat(document.getElementById("pricePerHalfHour").value);
   const l = parseFloat(document.getElementById("homeDiscount").value);
-  if(!t||!e||isNaN(o)||isNaN(d)||isNaN(c)||isNaN(l))
+  if (!t || !e || isNaN(o) || isNaN(d) || isNaN(c) || isNaN(l))
     return showModal("⚠️ 請填寫所有欄位並輸入正確數值");
 
   const u = new Date(t);
   const s = new Date(e);
-  if(s<u) return showModal("⚠️ 結束日期不可早於開始日期");
+  if (s < u) return showModal("⚠️ 結束日期不可早於開始日期");
 
-  let dayCount = (s-u)/86400000;
-  dayCount += (a==="pm" && n==="am")?0 : (a==="am" && n==="pm")?1:0.5;
-  const totalMinutes = o*d*dayCount;
-  const basePrice = totalMinutes/30 * c * l;
+  let dayCount = (s - u) / 86400000;
+  dayCount += (a === "pm" && n === "am") ? 0 : (a === "am" && n === "pm") ? 1 : 0.5;
 
-  // 雜項計算
-  const extra1 = (parseFloat(document.getElementById("homeExtraAmount1").value)||0) *
-                 (parseFloat(document.getElementById("homeExtraDiscount1").value)||1);
-  const extra2 = (parseFloat(document.getElementById("homeExtraAmount2").value)||0) *
-                 (parseFloat(document.getElementById("homeExtraDiscount2").value)||1);
+  const totalMinutes = o * d * dayCount;
+  const basePrice = totalMinutes / 30 * c * l;
 
-  const finalPrice = basePrice + extra1 + extra2;
+  // 雜項明細
+  let extrasText = "";
+  const extra1Name = document.getElementById("homeExtraName1").value.trim();
+  const extra1Amount = parseFloat(document.getElementById("homeExtraAmount1").value) || 0;
+  const extra1Discount = parseFloat(document.getElementById("homeExtraDiscount1").value) || 1;
+  const extra1Total = extra1Amount * extra1Discount;
+  if (extra1Name) extrasText += `${extra1Name}：${extra1Total.toLocaleString()} 元<br>`;
 
-  showModal(`🏠 <b style="color:#d72660;">到府計算結果</b><br><br>
+  const extra2Name = document.getElementById("homeExtraName2").value.trim();
+  const extra2Amount = parseFloat(document.getElementById("homeExtraAmount2").value) || 0;
+  const extra2Discount = parseFloat(document.getElementById("homeExtraDiscount2").value) || 1;
+  const extra2Total = extra2Amount * extra2Discount;
+  if (extra2Name) extrasText += `${extra2Name}：${extra2Total.toLocaleString()} 元<br>`;
+
+  const finalPrice = basePrice + extra1Total + extra2Total;
+
+  showModal(`
+    🏠 <b style="color:#d72660;">到府計算結果</b><br><br>
     📅 共 <b>${dayCount}</b> 天，平均每日 ${d} 次<br>
     ⏱️ 每次 ${o} 分鐘，共 ${totalMinutes} 分鐘<br><br>
-    🎫 折扣後金額 + 雜項：<br>
+    🎫 折扣後金額：<b>${basePrice.toLocaleString()}</b> 元<br><br>
+    ${extrasText ? `<b>雜項：</b><br>${extrasText}<br>` : ""}
     <b style="font-size:22px;color:#d72660">${finalPrice.toLocaleString()}</b> 元<br><br>
-    <small style="color:#888;">謝謝您選擇風滾草工作室 🌿</small>`);
+    <small style="color:#888;">謝謝您選擇風滾草工作室 🌿</small>
+  `);
 }
 
     function showModal(t){document.getElementById("modalResultText").innerHTML=t,document.getElementById("modal").style.display="block",document.body.style.overflow="hidden";}
