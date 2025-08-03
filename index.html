@@ -113,15 +113,17 @@
     .date-period-row {
       display: flex;
       gap: 10px;
+      flex-wrap: wrap; /* 允許換行 */
     }
-    
     .date-field {
-      flex: 1.5; /* 日期比較大 */
+      flex: 1 1 60%; /* 日期預設比較寬 */
+      min-width: 140px;
+    }
+    .period-field {
+      flex: 1 1 35%; /* 時段比較窄 */
+      min-width: 100px;
     }
     
-    .period-field {
-      flex: 1; /* 時段比較小 */
-    }
   </style>
 </head>
 <body>
