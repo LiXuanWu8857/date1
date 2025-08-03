@@ -110,10 +110,6 @@
     .extra-item .homeExtraDiscount2 {
       flex: 1; /* 折扣最窄 */
     }
-    @media (max-width: 480px) {
-      .extra-item {
-        flex-direction: column;
-      }
     
     .date-period-row {
       display: flex;
@@ -141,12 +137,6 @@
     .date-time-row .time-field {
       flex: 1;  /* 時間比較小 */
     }
-    
-    /* 手機版調整，避免擠壓 */
-    @media (max-width: 480px) {
-      .date-time-row {
-        flex-direction: column;
-      }
     }
   </style>
 </head>
@@ -212,7 +202,7 @@
   </div>
   <div class="time-field">
     <label>🕒 開始時間</label>
-    <input type="time" id="startTime" value="00:00">
+    <input type="time" id="startTime" value="15:00">
   </div>
 </div>
 
@@ -224,7 +214,7 @@
   </div>
   <div class="time-field">
     <label>🕒 結束時間</label>
-    <input type="time" id="endTime" value="00:00">
+    <input type="time" id="endTime" value="11:00">
   </div>
 </div>
   <label>💰 每日金額</label><input type="number" id="rate" min="0" placeholder="例如：1200">
