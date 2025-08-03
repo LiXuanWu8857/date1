@@ -54,17 +54,35 @@
     .confirm-btn { margin-top: 25px; width: 70%; background-color: #d72660; color: #fff; font-size: 18px; border-radius: 10px; border: none; padding: 12px 0; font-weight: bold;}
     .confirm-btn:hover { background-color: #b61a49; }
     .hidden { display: none; }
+    /*  按鈕直式排列
     .mode-toggle {
       display: flex;
       flex-direction: column;
-      gap: 0px; /* 按鈕間距 */
+      gap: 0px;  按鈕間距 
+      margin-bottom: 15px;  與下方計算機區塊間距 
+    }
+    #stayCalculator,
+    #homeCalculator {
+      margin-top: 0;  移除額外間距 
+    }
+    @media (max-width: 600px) { 
+      .service-values { flex-direction: column; } 
+      .brand-title { font-size: 24px; } 
+      .modal-content { margin: 15% auto; padding: 25px; } 
+    }
+    */
+    .mode-toggle {
+      display: flex;
+      flex-direction: row; /* 改成橫向排列 */
+      justify-content: center; /* 水平置中 */
+      gap: 10px; /* 按鈕之間的間距 */
       margin-bottom: 15px; /* 與下方計算機區塊間距 */
     }
+    
     #stayCalculator,
     #homeCalculator {
       margin-top: 0; /* 移除額外間距 */
     }
-    @media (max-width: 600px) { .service-values { flex-direction: column; } .brand-title { font-size: 24px; } .modal-content { margin: 15% auto; padding: 25px; } }
   </style>
 </head>
 <body>
