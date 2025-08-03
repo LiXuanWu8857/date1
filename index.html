@@ -110,7 +110,20 @@
     .extra-item .homeExtraDiscount2 {
       flex: 1; /* 折扣最窄 */
     }
-    
+    @media (max-width: 480px) {
+    .extra-item input.extraName1,
+    .extra-item input.extraName2,
+    .extra-item input.homeExtraName1,
+    .extra-item input.homeExtraName2 {
+      min-width: 120px;
+    }
+    .extra-item input.extraAmount1,
+    .extra-item input.extraAmount2,
+    .extra-item input.homeExtraAmount1,
+    .extra-item input.homeExtraAmount2 {
+      min-width: 80px;
+    }
+  }
     .date-period-row {
       display: flex;
       gap: 10px;
