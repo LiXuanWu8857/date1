@@ -83,6 +83,15 @@
     #homeCalculator {
       margin-top: 0; /* 移除額外間距 */
     }
+    .extra-item {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    
+    .extra-item input {
+      flex: 1;
+    }
   </style>
 </head>
 <body>
@@ -104,7 +113,8 @@
     <button id="homeModeBtn" onclick="switchMode('home')">到府模式</button>
   </div>
 
-  <!-- 住宿計算機 -->
+  <!-- 住宿計算機 
+
   <div id="stayCalculator" class="calculator-section">
     <button class="clear-btn" onclick="clearAll()">🧹 清除所有欄位</button>
     <h2>🏠 住宿金額計算機</h2>
@@ -117,7 +127,7 @@
     <button onclick="calculate()">🧮 計算費用</button>
   </div>
 
-  <!-- 到府計算機 -->
+  <!-- 到府計算機 
   <div id="homeCalculator" class="calculator-section hidden">
     <button class="clear-btn" onclick="clearHome()">🧹 清除所有欄位</button>
     <h2>🐾 到府金額計算機</h2>
@@ -131,7 +141,60 @@
     <label>🎫 折扣</label><input type="number" id="homeDiscount" min="0" max="1" step="0.01" value="1">
     <button onclick="calculateHome()">🧮 計算費用</button>
   </div>
+  -->
+  
+  <!-- 住宿計算機 -->
+<div id="stayCalculator" class="calculator-section">
+  <button class="clear-btn" onclick="clearAll()">🧹 清除所有欄位</button>
+  <h2>🏠 住宿金額計算機</h2>
+  <label>🗓️ 開始日期</label><input type="date" id="startDate">
+  <label>🕒 開始時間</label><input type="time" id="startTime" value="15:00">
+  <label>🗓️ 結束日期</label><input type="date" id="endDate">
+  <label>🕒 結束時間</label><input type="time" id="endTime" value="11:00">
+  <label>💰 每日金額</label><input type="number" id="rate" min="0" placeholder="例如：1200">
+  <label>🎫 折扣</label><input type="number" id="discount" min="0" max="1" step="0.01" value="1">
 
+  <h3>其他雜項</h3>
+  <div class="extra-item">
+    <input type="text" id="extraName1" placeholder="名稱">
+    <input type="number" id="extraAmount1" min="0" placeholder="金額">
+    <input type="number" id="extraDiscount1" min="0" max="1" step="0.01" value="1" placeholder="折數">
+  </div>
+  <div class="extra-item">
+    <input type="text" id="extraName2" placeholder="名稱">
+    <input type="number" id="extraAmount2" min="0" placeholder="金額">
+    <input type="number" id="extraDiscount2" min="0" max="1" step="0.01" value="1" placeholder="折數">
+  </div>
+  <button onclick="calculate()">🧮 計算費用</button>
+</div>
+
+<!-- 到府計算機 -->
+<div id="homeCalculator" class="calculator-section hidden">
+  <button class="clear-btn" onclick="clearAll()">🧹 清除所有欄位</button>
+  <h2>🐾 到府金額計算機</h2>
+  <label>🗓️ 開始日期</label><input type="date" id="homeStartDate">
+  <label>☀️ 開始時段</label><select id="homeStartPeriod"><option value="am">上午</option><option value="noon">中午</option><option value="pm">下午</option></select>
+  <label>🗓️ 結束日期</label><input type="date" id="homeEndDate">
+  <label>🌇 結束時段</label><select id="homeEndPeriod"><option value="am">上午</option><option value="noon">中午</option><option value="pm">下午</option></select>
+  <label>⏱️ 每次到府時間（分鐘）</label><select id="visitMinutes"><option value="30">30</option><option value="60">60</option></select>
+  <label>🔁 每天幾次</label><input type="number" id="visitsPerDay" min="1" value="1">
+  <label>💰 每半小時金額</label><input type="number" id="pricePerHalfHour" min="0">
+  <label>🎫 折扣</label><input type="number" id="homeDiscount" min="0" max="1" step="0.01" value="1">
+
+  <h3>其他雜項</h3>
+  <div class="extra-item">
+    <input type="text" id="homeExtraName1" placeholder="名稱">
+    <input type="number" id="homeExtraAmount1" min="0" placeholder="金額">
+    <input type="number" id="homeExtraDiscount1" min="0" max="1" step="0.01" value="1" placeholder="折數">
+  </div>
+  <div class="extra-item">
+    <input type="text" id="homeExtraName2" placeholder="名稱">
+    <input type="number" id="homeExtraAmount2" min="0" placeholder="金額">
+    <input type="number" id="homeExtraDiscount2" min="0" max="1" step="0.01" value="1" placeholder="折數">
+  </div>
+
+  <button onclick="calculateHome()">🧮 計算費用</button>
+</div>
   <!-- Modal 彈出視窗 -->
   <div id="modal" class="modal">
     <div class="modal-content" id="modalContent">
@@ -143,11 +206,108 @@
 
   <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
   <script>
-    function setDefaultDates(){const t=new Date,e=t.getFullYear(),a=String(t.getMonth()+1).padStart(2,"0"),n=String(t.getDate()-1).padStart(2,"0");document.getElementById("startDate").value=`${e}-${a}-${n}`;const o=new Date(t);o.setDate(t.getDate());const d=o.getFullYear(),c=String(o.getMonth()+1).padStart(2,"0"),l=String(o.getDate()).padStart(2,"0");document.getElementById("endDate").value=`${d}-${c}-${l}`;}
+    function setDefaultDates() {
+  const today = new Date();
+  const yyyy = today.getFullYear();
+  const mm = String(today.getMonth() + 1).padStart(2, "0");
+  const dd = String(today.getDate()).padStart(2, "0");
+
+  // 住宿預設：開始日 = 前一天，結束日 = 當天
+  const prevDay = new Date(today);
+  prevDay.setDate(today.getDate() - 1);
+  const prevY = prevDay.getFullYear();
+  const prevM = String(prevDay.getMonth() + 1).padStart(2, "0");
+  const prevD = String(prevDay.getDate()).padStart(2, "0");
+  document.getElementById("startDate").value = `${prevY}-${prevM}-${prevD}`;
+  document.getElementById("endDate").value = `${yyyy}-${mm}-${dd}`;
+
+  // 到府預設：開始日 = 結束日 = 當天
+  document.getElementById("homeStartDate").value = `${yyyy}-${mm}-${dd}`;
+  document.getElementById("homeEndDate").value = `${yyyy}-${mm}-${dd}`;
+}
     window.onload=setDefaultDates;
 
-    function calculate(){const t=document.getElementById("startDate").value,e=document.getElementById("startTime").value,a=document.getElementById("endDate").value,n=document.getElementById("endTime").value,o=parseFloat(document.getElementById("rate").value),d=parseFloat(document.getElementById("discount").value);if(!t||!a||!e||!n||isNaN(o)||isNaN(d)||o<0||d<=0)return showModal("⚠️ 請填寫所有欄位並輸入正確數值");const c=new Date(`${t}T${e}`),l=new Date(`${a}T${n}`);if(l<=c)return showModal("⚠️ 結束時間必須晚於開始時間");const u=l-c,s=1e3*60*60*24,r=Math.floor(u/s),m=u%s/36e5;let i=0;i=m>12?1:m>0?.5:0;const y=r+i,h=y*o,v=h*d;showModal(`🐾 <b style="color:#d72660;">住宿計算結果</b><br><br>🛏️ 共 <b>${y}</b> 天（含加成 <b>${i}</b> 天）<br><br>💰 原價 <b>${h.toLocaleString()}</b> 元<br><br>🎫 折扣後總金額：<br><b style="font-size:22px;color:#d72660">${v.toLocaleString()}</b> 元<br><br><small style="color:#888;">謝謝您選擇風滾草工作室 🌿</small>`);}
-    function calculateHome(){const t=document.getElementById("homeStartDate").value,e=document.getElementById("homeEndDate").value,a=document.getElementById("homeStartPeriod").value,n=document.getElementById("homeEndPeriod").value,o=parseInt(document.getElementById("visitMinutes").value),d=parseInt(document.getElementById("visitsPerDay").value),c=parseFloat(document.getElementById("pricePerHalfHour").value),l=parseFloat(document.getElementById("homeDiscount").value);if(!t||!e||isNaN(o)||isNaN(d)||isNaN(c)||isNaN(l))return showModal("⚠️ 請填寫所有欄位並輸入正確數值");const u=new Date(t),s=new Date(e);if(s<u)return showModal("⚠️ 結束日期不可早於開始日期");let r=(s-u)/864e5;r+="pm"===a&&"am"===n?0:"am"===a&&"pm"===n?1:.5;const m=o*d*r,i=m/30*c,y=i*l;showModal(`🏠 <b style="color:#d72660;">到府計算結果</b><br><br>📅 共 <b>${r}</b> 天，平均每日 ${d} 次<br>⏱️ 每次 ${o} 分鐘，共 ${m} 分鐘<br><br>💰 原價 <b>${i.toLocaleString()}</b> 元<br><br>🎫 折扣後總金額：<br><b style="font-size:22px;color:#d72660">${y.toLocaleString()}</b> 元<br><br><small style="color:#888;">謝謝您選擇風滾草工作室 🌿</small>`);}
+/*
+    function calculate(){const t=document.getElementById("startDate").value,e=document.getElementById("startTime").value,a=document.getElementById("endDate").value,n=document.getElementById("endTime").value,o=parseFloat(document.getElementById("rate").value),d=parseFloat(document.getElementById("discount").value);if(!t||!a||!e||!n||isNaN(o)||isNaN(d)||o<0||d<=0)return showModal("⚠️ 請填寫所有欄位並輸入正確數值");const c=new Date(`${t}T${e}`),l=new Date(`${a}T${n}`);if(l<=c)return showModal("⚠️ 結束時間必須晚於開始時間");const u=l-c,s=1e3*60*60*24,r=Math.floor(u/s),m=u%s/36e5;let i=0;i=m>12?1:m>0?.5:0;const y=r+i,h=y*o,v=h*d;showModal(`🐾 <b style="color:#d72660;">住宿計算結果</b><br><br>🛏️ 共 <b>${y}</b> 天（含加成 <b>${i}</b> 天）<br><br>💰 原價 <b>${h.toLocaleString()}</b> 元<br><br>🎫 折扣後總金額：<br><b style="font-size:22px;color:#d72660">${v.toLocaleString()}</b> 元<br><br><small style="color:#888;">謝謝您選擇風滾草工作室 🌿</small>`);}*/
+
+    function calculate(){
+  const t = document.getElementById("startDate").value;
+  const e = document.getElementById("startTime").value;
+  const a = document.getElementById("endDate").value;
+  const n = document.getElementById("endTime").value;
+  const o = parseFloat(document.getElementById("rate").value);
+  const d = parseFloat(document.getElementById("discount").value);
+  if(!t||!a||!e||!n||isNaN(o)||isNaN(d)||o<0||d<=0)
+    return showModal("⚠️ 請填寫所有欄位並輸入正確數值");
+
+  const c = new Date(`${t}T${e}`);
+  const l = new Date(`${a}T${n}`);
+  if(l<=c) return showModal("⚠️ 結束時間必須晚於開始時間");
+
+  const u = l-c;
+  const s = 1000*60*60*24;
+  const r = Math.floor(u/s);
+  const m = (u % s)/3600000;
+  const addDay = m>12?1:(m>0?0.5:0);
+  const totalDays = r+addDay;
+  const basePrice = totalDays * o;
+  const totalBase = basePrice * d;
+
+  // 雜項計算
+  const extra1 = (parseFloat(document.getElementById("extraAmount1").value)||0) *
+                 (parseFloat(document.getElementById("extraDiscount1").value)||1);
+  const extra2 = (parseFloat(document.getElementById("extraAmount2").value)||0) *
+                 (parseFloat(document.getElementById("extraDiscount2").value)||1);
+
+  const finalPrice = totalBase + extra1 + extra2;
+
+  showModal(`🐾 <b style="color:#d72660;">住宿計算結果</b><br><br>
+    🛏️ 共 <b>${totalDays}</b> 天（含加成 <b>${addDay}</b> 天）<br><br>
+    💰 原價 <b>${basePrice.toLocaleString()}</b> 元<br><br>
+    🎫 折扣後總金額 + 雜項：<br>
+    <b style="font-size:22px;color:#d72660">${finalPrice.toLocaleString()}</b> 元<br><br>
+    <small style="color:#888;">謝謝您選擇風滾草工作室 🌿</small>`);
+}
+
+    /*function calculateHome(){const t=document.getElementById("homeStartDate").value,e=document.getElementById("homeEndDate").value,a=document.getElementById("homeStartPeriod").value,n=document.getElementById("homeEndPeriod").value,o=parseInt(document.getElementById("visitMinutes").value),d=parseInt(document.getElementById("visitsPerDay").value),c=parseFloat(document.getElementById("pricePerHalfHour").value),l=parseFloat(document.getElementById("homeDiscount").value);if(!t||!e||isNaN(o)||isNaN(d)||isNaN(c)||isNaN(l))return showModal("⚠️ 請填寫所有欄位並輸入正確數值");const u=new Date(t),s=new Date(e);if(s<u)return showModal("⚠️ 結束日期不可早於開始日期");let r=(s-u)/864e5;r+="pm"===a&&"am"===n?0:"am"===a&&"pm"===n?1:.5;const m=o*d*r,i=m/30*c,y=i*l;showModal(`🏠 <b style="color:#d72660;">到府計算結果</b><br><br>📅 共 <b>${r}</b> 天，平均每日 ${d} 次<br>⏱️ 每次 ${o} 分鐘，共 ${m} 分鐘<br><br>💰 原價 <b>${i.toLocaleString()}</b> 元<br><br>🎫 折扣後總金額：<br><b style="font-size:22px;color:#d72660">${y.toLocaleString()}</b> 元<br><br><small style="color:#888;">謝謝您選擇風滾草工作室 🌿</small>`);}*/
+    
+    function calculateHome(){
+  const t = document.getElementById("homeStartDate").value;
+  const e = document.getElementById("homeEndDate").value;
+  const a = document.getElementById("homeStartPeriod").value;
+  const n = document.getElementById("homeEndPeriod").value;
+  const o = parseInt(document.getElementById("visitMinutes").value);
+  const d = parseInt(document.getElementById("visitsPerDay").value);
+  const c = parseFloat(document.getElementById("pricePerHalfHour").value);
+  const l = parseFloat(document.getElementById("homeDiscount").value);
+  if(!t||!e||isNaN(o)||isNaN(d)||isNaN(c)||isNaN(l))
+    return showModal("⚠️ 請填寫所有欄位並輸入正確數值");
+
+  const u = new Date(t);
+  const s = new Date(e);
+  if(s<u) return showModal("⚠️ 結束日期不可早於開始日期");
+
+  let dayCount = (s-u)/86400000;
+  dayCount += (a==="pm" && n==="am")?0 : (a==="am" && n==="pm")?1:0.5;
+  const totalMinutes = o*d*dayCount;
+  const basePrice = totalMinutes/30 * c * l;
+
+  // 雜項計算
+  const extra1 = (parseFloat(document.getElementById("homeExtraAmount1").value)||0) *
+                 (parseFloat(document.getElementById("homeExtraDiscount1").value)||1);
+  const extra2 = (parseFloat(document.getElementById("homeExtraAmount2").value)||0) *
+                 (parseFloat(document.getElementById("homeExtraDiscount2").value)||1);
+
+  const finalPrice = basePrice + extra1 + extra2;
+
+  showModal(`🏠 <b style="color:#d72660;">到府計算結果</b><br><br>
+    📅 共 <b>${dayCount}</b> 天，平均每日 ${d} 次<br>
+    ⏱️ 每次 ${o} 分鐘，共 ${totalMinutes} 分鐘<br><br>
+    🎫 折扣後金額 + 雜項：<br>
+    <b style="font-size:22px;color:#d72660">${finalPrice.toLocaleString()}</b> 元<br><br>
+    <small style="color:#888;">謝謝您選擇風滾草工作室 🌿</small>`);
+}
+
     function showModal(t){document.getElementById("modalResultText").innerHTML=t,document.getElementById("modal").style.display="block",document.body.style.overflow="hidden";}
     function closeModal(){document.getElementById("modal").style.display="none",document.body.style.overflow="auto";}
     function clearAll(){document.getElementById("startDate").value="",document.getElementById("startTime").value="15:00",document.getElementById("endDate").value="",document.getElementById("endTime").value="11:00",document.getElementById("rate").value="",document.getElementById("discount").value="1",setDefaultDates();}
