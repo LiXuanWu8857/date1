@@ -119,7 +119,7 @@
 
   <!-- 到府計算機 -->
   <div id="homeCalculator" class="calculator-section hidden">
-    <button class="clear-btn" onclick="clearAll()">🧹 清除所有欄位</button>
+    <button class="clear-btn" onclick="clearHome()">🧹 清除所有欄位</button>
     <h2>🏠 到府金額計算機</h2>
     <label>🗓️ 開始日期</label><input type="date" id="homeStartDate">
     <label>☀️ 開始時段</label><select id="homeStartPeriod"><option value="am">上午</option><option value="noon">中午</option><option value="pm">下午</option></select>
@@ -151,7 +151,18 @@
     function showModal(t){document.getElementById("modalResultText").innerHTML=t,document.getElementById("modal").style.display="block",document.body.style.overflow="hidden";}
     function closeModal(){document.getElementById("modal").style.display="none",document.body.style.overflow="auto";}
     function clearAll(){document.getElementById("startDate").value="",document.getElementById("startTime").value="15:00",document.getElementById("endDate").value="",document.getElementById("endTime").value="11:00",document.getElementById("rate").value="",document.getElementById("discount").value="1",setDefaultDates();}
-    document.getElementById("modal").onclick=function(t){t.target===document.getElementById("modal")&&closeModal();}
+
+    function clearHome() {
+  document.getElementById("homeStartDate").value = "";
+  document.getElementById("homeStartPeriod").value = "am";
+  document.getElementById("homeEndDate").value = "";
+  document.getElementById("homeEndPeriod").value = "am";
+  document.getElementById("visitMinutes").value = "30";
+  document.getElementById("visitsPerDay").value = 1;
+  document.getElementById("pricePerHalfHour").value = "";
+  document.getElementById("homeDiscount").value = 1;
+}
+            document.getElementById("modal").onclick=function(t){t.target===document.getElementById("modal")&&closeModal();}
     window.onkeydown=function(t){"Escape"===t.key&&closeModal();}
     function switchMode(t){"stay"===t?(stayModeBtn.classList.add("active"),homeModeBtn.classList.remove("active"),stayCalculator.classList.remove("hidden"),homeCalculator.classList.add("hidden")):(stayModeBtn.classList.remove("active"),homeModeBtn.classList.add("active"),stayCalculator.classList.add("hidden"),homeCalculator.classList.remove("hidden"));}
     
