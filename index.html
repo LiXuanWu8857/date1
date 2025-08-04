@@ -172,7 +172,7 @@
     
     .start-section input[type="date"],
     .start-section input[type="time"] {
-      width: 120px;
+      width: 350px;
       height: 32px;
       font-size: 14px;
       padding: 4px 8px;
@@ -200,11 +200,44 @@
     
     .end-section input[type="date"],
     .end-section input[type="time"] {
-      width: 130px;
-      height: 34px;
+      width: 100px;
+      height: 32px;
       font-size: 14px;
       padding: 4px 8px;
       border-radius: 6px;
+    }
+
+    .amount-discount-row {
+        display: flex;
+        justify-content: center;   /* 整行置中（依需要可調整） */
+        align-items: flex-end;     /* 欄位底部對齊 */
+        gap: 16px;                 /* 欄位間距 */
+        margin-bottom: 18px;
+    }
+
+    .amount-field,
+    .discount-field {
+        display: flex;
+        flex-direction: column;
+        align-items: center;          /* 文字＆輸入欄都置中（或用flex-start靠左） */
+    }
+
+    .amount-field {
+        width: 350px;     /* 金額欄寬度 */
+    }
+    .discount-field {
+        width: 100px;     /* 折扣欄寬度 */
+    }
+
+    .amount-field input,
+    .discount-field input {
+        width: 100%;
+        padding: 6px 8px;
+        font-size: 14px;
+        border: 1.5px solid #d72660;
+        border-radius: 6px;
+        box-sizing: border-box;
+        text-align: center;
     }
 
     .modal-content {
@@ -214,7 +247,7 @@
       padding: 18px 10px;
       margin: 15% auto;
     }
-    
+
     @media (max-width: 480px) {
       .modal-content {
         width: 95%;
@@ -305,9 +338,17 @@
   </div>
 </div>
 
-  <label>💰 每日金額</label><input type="number" id="rate" min="0" placeholder="例如：1200">
-  <label>🎫 折扣</label><input type="number" id="discount" min="0" max="1" step="0.01" value="1">
-
+<div class="amount-discount-row">
+    <div class="amount-field">
+      <label>💰 每日金額</label>
+      <input type="number" id="rate" min="0" placeholder="例如：1200">
+    </div>
+    <div class="discount-field">
+      <label>🎫 折扣</label>
+      <input type="number" id="discount" min="0" max="1" step="0.01" value="1">
+    </div>
+</div>
+  
   <h3>其他雜項</h3>
   <div class="extra-item">
     <input type="text" id="extraName1" class="extraName1" placeholder="名稱">
