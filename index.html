@@ -302,6 +302,7 @@
       }
     }
 
+  /*到府計算區*/
     .visit-main-row {
     display: flex;
     gap: 24px; /* 欄與欄間距 */
@@ -333,13 +334,17 @@
 
     .field-group select,
     .field-group input {
-    width: 100%;
-    padding: 6px 8px;
-    font-size: 14px;
-    border: 1.5px solid #d72660;
-    border-radius: 6px;
-    box-sizing: border-box;
-    text-align: center;
+      width: 100%;
+      height: 38px;           /* 🔹 固定高度 */
+      padding: 0 8px;         /* 內距統一 */
+      font-size: 14px;
+      border: 1.5px solid #d72660;
+      border-radius: 6px;
+      box-sizing: border-box;
+      text-align: center;
+      -webkit-appearance: none; /* 移除 iOS 預設樣式 */
+      -moz-appearance: none;
+      appearance: none;
     }
 
 
@@ -610,7 +615,7 @@ function calculate() {
   const finalPrice = totalBase + extra1Total + extra2Total;
 
   showModal(`
-    🐾 <b style="color:#d72660;">住宿計算結果</b><br><br>
+    🏠 <b style="color:#d72660;">住宿計算結果</b><br><br>
     🛏️ 共 <b>${totalDays}</b> 天（含加成 <b>${addDay}</b> 天）<br><br>
     💰 原價 <b>${basePrice.toLocaleString()}</b> 元<br>
     🎫 折扣後金額：<b>${totalBase.toLocaleString()}</b> 元<br><br>
@@ -661,7 +666,7 @@ function calculateHome() {
   const finalPrice = basePrice + extra1Total + extra2Total;
 
   showModal(`
-    🏠 <b style="color:#d72660;">到府計算結果</b><br><br>
+    🐾 <b style="color:#d72660;">到府計算結果</b><br><br>
     📅 共 <b>${dayCount}</b> 天，平均每日 ${d} 次<br>
     ⏱️ 每次 ${o} 分鐘，共 ${totalMinutes} 分鐘<br><br>
     🎫 折扣後金額：<b>${basePrice.toLocaleString()}</b> 元<br><br>
