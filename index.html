@@ -259,30 +259,36 @@
       }
     }
 
-    .visit-time-count-row,
-    .amount-discount-row {
+    .visit-amount-left,
+    .visit-discount-right {
     display: flex;
-    gap: 16px;
-    justify-content: space-between; /* 左右分開填滿 */
-    align-items: flex-end;
-    flex-wrap: nowrap;  /* 不換行，手機也並排 */
+    flex-direction: column;
+    gap: 12px;
+    }
+
+    /* 左欄固定350px */
+    .visit-amount-left {
+    width: 350px;
+    }
+
+    /* 右欄固定110px */
+    .visit-discount-right {
+    width: 110px;
+    }
+
+    /* 裡面欄位填滿 */
+    .visit-amount-left .field-group,
+    .visit-discount-right .field-group {
     width: 100%;
     }
 
-    .field-group {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    flex: 1 1 45%;    /* 兩欄約平分寬度 */
-    min-width: 120px; /* 防止太窄 */
-    margin-bottom: 12px;
-    }
-
+    /* 保持 label 與 input 樣式 */
     .field-group label {
     font-weight: bold;
     color: #d72660;
     margin-bottom: 6px;
     width: 100%;
+    text-align: left;
     }
 
     .field-group input,
@@ -442,31 +448,27 @@
   </div>
 </div>
 
-<div class="visit-time-count-row">
+<div class="visit-amount-left">
     <div class="field-group">
-      <label>⏱️ 每次到府時間</label>
-      <select id="visitMinutes">
-        <option value="30">30</option>
-        <option value="60">60</option>
-      </select>
+      <label>⏱️ 每次到府時間（分鐘）</label>
+      <select id="visitMinutes">...</select>
     </div>
-    <div class="field-group">
-      <label>🔁 每天幾次</label>
-      <input type="number" id="visitsPerDay" min="1" value="1">
-    </div>
-  </div>
-  
-  <div class="amount-discount-row">
     <div class="field-group">
       <label>💰 每半小時金額</label>
       <input type="number" id="pricePerHalfHour" min="0">
+    </div>
+  </div>
+  
+  <div class="visit-discount-right">
+    <div class="field-group">
+      <label>🔁 每天幾次</label>
+      <input type="number" id="visitsPerDay" min="1" value="1">
     </div>
     <div class="field-group">
       <label>🎫 折扣</label>
       <input type="number" id="homeDiscount" min="0" max="1" step="0.01" value="1">
     </div>
   </div>
-  
 
   <h3>其他雜項</h3>
   <div class="extra-item">
@@ -684,4 +686,3 @@ function calculateHome() {
   </script>
 </body>
 </html>
-
