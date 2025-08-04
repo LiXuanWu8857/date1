@@ -147,12 +147,13 @@
       border-radius: 6px;
     }
 
+    /*住宿區域調整*/
     .date-time-row {
       display: flex;
       gap: 10px;
     }
     
-    /* === 開始區塊樣式 === */
+    /* === 左側區塊樣式 === */
     .start-section {
       display: flex;
       gap: 12px;
@@ -166,12 +167,13 @@
     }
     
     .start-section .time-field {
-      flex: 1 1 35%;
+      flex: 1 1 20%;
       min-width: 100px;
     }
     
     .start-section input[type="date"],
-    .start-section input[type="time"] {
+    .end-section input[type="date"]{
+     
       width: 200px;
       height: 32px;
       font-size: 14px;
@@ -180,7 +182,7 @@
     }
     
     
-    /* === 結束區塊樣式 === */
+    /* === 右側區塊樣式 === */
     .end-section {
       display: flex;
       gap: 12px;
@@ -194,13 +196,13 @@
     }
     
     .end-section .time-field {
-      flex: 1 1 35%;
+      flex: 1 1 20%;
       min-width: 100px;
     }
     
-    .end-section input[type="date"],
+    .start-section input[type="time"],
     .end-section input[type="time"] {
-      width: 200px;
+      width: 150px;
       height: 32px;
       font-size: 14px;
       padding: 4px 8px;
@@ -268,12 +270,12 @@
 
     /* 左欄固定350px */
     .visit-amount-left {
-    width: 350px;
+    width: 300px;
     }
 
     /* 右欄固定110px */
     .visit-discount-right {
-    width: 110px;
+    width: 50px;
     }
 
     /* 裡面欄位填滿 */
