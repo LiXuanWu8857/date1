@@ -263,19 +263,18 @@
     .amount-discount-row {
     display: flex;
     gap: 16px;
-    justify-content: space-between; /* 頂級容器左右兩端填滿 */
-    flex-wrap: wrap;
+    justify-content: space-between; /* 左右分開填滿 */
     align-items: flex-end;
-    width: 100%; /* 佔滿父容器 */
+    flex-wrap: nowrap;  /* 不換行，手機也並排 */
+    width: 100%;
     }
 
-    /* 欄位組允許等寬填滿剩餘空間 */
     .field-group {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    flex: 1 1 45%;  /* 允許最大約佔45%寬 */
-    min-width: 150px; /* 防止太窄 */
+    flex: 1 1 45%;    /* 兩欄約平分寬度 */
+    min-width: 120px; /* 防止太窄 */
     margin-bottom: 12px;
     }
 
@@ -297,20 +296,6 @@
     text-align: center;
     }
 
-    /* 響應式手機版直排 */
-    @media (max-width: 600px) {
-    .visit-time-count-row,
-    .amount-discount-row {
-        flex-direction: column;
-        align-items: stretch;
-    }
-    .field-group {
-        flex: none;
-        width: 100%; /* 手機版欄位 100% */
-    }
-    }
-
-    
   </style>
 </head>
 <body>
