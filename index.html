@@ -124,28 +124,6 @@
       min-width: 80px;
     }
   }
-    .date-period-row {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap; /* 允許換行 */
-    }
-    .date-field {
-      flex: 1 1 60%; /* 日期預設比較寬 */
-      min-width: 140px;
-    }
-    .period-field {
-      flex: 1 1 35%; /* 時段比較窄 */
-      min-width: 100px;
-    }
-    
-    .date-period-row input[type="date"],
-    .date-period-row select {
-      width: 160px;
-      height: 32px;
-      padding: 4px 8px;
-      font-size: 14px;
-      border-radius: 6px;
-    }
 
     /*住宿區域調整*/
     .date-time-row {
@@ -208,7 +186,7 @@
       padding: 4px 8px;
       border-radius: 6px;
     }
-
+    
     .amount-discount-row {
         display: flex;
         justify-content: center;   /* 整行置中（依需要可調整） */
@@ -242,6 +220,69 @@
         text-align: center;
     }
 
+    /* 到府區域調整 */
+    .date-period-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap; /* 允許換行 */
+    }
+     /* === 左側區塊樣式 === */
+     .start-homesection {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    
+    .start-homesection .date-field {
+      flex: 1 1 40%;
+      min-width: 130px;
+    }
+    
+    .start-homesection .period-field {
+      flex: 1 1 20%;
+      min-width: 100px;
+    }
+    
+    .start-homesection input[type="date"],
+    .end-homesection input[type="date"]{
+      width: 200px;
+      height: 32px;
+      font-size: 14px;
+      padding: 4px 8px;
+      border-radius: 6px;
+    }
+    
+    
+    /* === 右側區塊樣式 === */
+    .end-homesection {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    
+    .end-homesection .date-field {
+      flex: 1 1 40%;
+      min-width: 130px;
+    }
+    
+    .end-homesection .period-field {
+      flex: 1 1 20%;
+      min-width: 100px;
+    }
+    
+    .start-homesection .period-field select,
+    .end-homesection .period-field select {
+    width: 130px;
+    height: 32px;
+    font-size: 14px;
+    padding: 4px 8px;
+    border-radius: 6px;
+    box-sizing: border-box;
+    }
+
+    
     .modal-content {
       width: 90%;
       max-width: 380px;
@@ -261,40 +302,37 @@
       }
     }
 
+    .visit-main-row {
+    display: flex;
+    gap: 24px; /* 欄與欄間距 */
+    align-items: flex-start;
+    flex-wrap: nowrap; /* 禁止換行，兩欄保持並排 */
+    }
+
     .visit-amount-left,
     .visit-discount-right {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 16px;
     }
 
-    /* 左欄固定350px */
     .visit-amount-left {
-    width: 300px;
+    width: 200px; /* 固定寬度 */
     }
 
-    /* 右欄固定110px */
     .visit-discount-right {
-    width: 50px;
+    width: 100px; /* 固定寬度 */
     }
 
-    /* 裡面欄位填滿 */
-    .visit-amount-left .field-group,
-    .visit-discount-right .field-group {
-    width: 100%;
-    }
-
-    /* 保持 label 與 input 樣式 */
     .field-group label {
     font-weight: bold;
     color: #d72660;
     margin-bottom: 6px;
-    width: 100%;
     text-align: left;
     }
 
-    .field-group input,
-    .field-group select {
+    .field-group select,
+    .field-group input {
     width: 100%;
     padding: 6px 8px;
     font-size: 14px;
@@ -303,6 +341,7 @@
     box-sizing: border-box;
     text-align: center;
     }
+
 
   </style>
 </head>
@@ -418,59 +457,67 @@
   <label>🗓️ 結束日期</label><input type="date" id="homeEndDate">
   <label>🌇 結束時段</label><select id="homeEndPeriod"><option value="am">上午</option><option value="noon">中午</option><option value="pm">下午</option></select>
   -->
+
   <!-- 開始 -->
-<div class="date-period-row">
-  <div class="date-field">
-    <label>🗓️ 開始日期</label>
-    <input type="date" id="homeStartDate">
-  </div>
-  <div class="period-field">
-    <label>☀️ 開始時段</label>
-    <select id="homeStartPeriod">
-      <option value="am">上午</option>
-      <option value="noon">中午</option>
-      <option value="pm">下午</option>
-    </select>
-  </div>
-</div>
-
-<!-- 結束 -->
-<div class="date-period-row">
-  <div class="date-field">
-    <label>🗓️ 結束日期</label>
-    <input type="date" id="homeEndDate">
-  </div>
-  <div class="period-field">
-    <label>🌇 結束時段</label>
-    <select id="homeEndPeriod">
-      <option value="am">上午</option>
-      <option value="noon">中午</option>
-      <option value="pm">下午</option>
-    </select>
-  </div>
-</div>
-
-<div class="visit-amount-left">
-    <div class="field-group">
-      <label>⏱️ 每次到府時間（分鐘）</label>
-      <select id="visitMinutes">...</select>
+  <div class="date-period-row start-homesection">
+    <div class="date-field">
+      <label>🗓️ 開始日期</label>
+      <input type="date" id="homeStartDate">
     </div>
-    <div class="field-group">
-      <label>💰 每半小時金額</label>
-      <input type="number" id="pricePerHalfHour" min="0">
+    <div class="period-field">
+      <label>☀️ 開始時段</label>
+      <select id="homeStartPeriod">
+        <option value="am">上午</option>
+        <option value="noon">中午</option>
+        <option value="pm">下午</option>
+      </select>
     </div>
   </div>
   
-  <div class="visit-discount-right">
-    <div class="field-group">
-      <label>🔁 每天幾次</label>
-      <input type="number" id="visitsPerDay" min="1" value="1">
+  <!-- 結束 -->
+  <div class="date-period-row end-homesection">
+    <div class="date-field">
+      <label>🗓️ 結束日期</label>
+      <input type="date" id="homeEndDate">
     </div>
-    <div class="field-group">
-      <label>🎫 折扣</label>
-      <input type="number" id="homeDiscount" min="0" max="1" step="0.01" value="1">
+    <div class="period-field">
+      <label>🌇 結束時段</label>
+      <select id="homeEndPeriod">
+        <option value="am">上午</option>
+        <option value="noon">中午</option>
+        <option value="pm">下午</option>
+      </select>
     </div>
   </div>
+
+
+  <div class="visit-main-row">
+    <div class="visit-amount-left">
+      <div class="field-group">
+        <label>⏱️ 每次到府時間（分鐘）</label>
+        <select id="visitMinutes">
+          <option value="30">30</option>
+          <option value="60">60</option>
+        </select>
+      </div>
+      <div class="field-group">
+        <label>💰 每半小時金額</label>
+        <input type="number" id="pricePerHalfHour" min="0">
+      </div>
+    </div>
+  
+    <div class="visit-discount-right">
+      <div class="field-group">
+        <label>🔁 每天幾次</label>
+        <input type="number" id="visitsPerDay" min="1" value="1">
+      </div>
+      <div class="field-group">
+        <label>🎫 折扣</label>
+        <input type="number" id="homeDiscount" min="0" max="1" step="0.01" value="1">
+      </div>
+    </div>
+  </div>
+  
 
   <h3>其他雜項</h3>
   <div class="extra-item">
@@ -688,4 +735,3 @@ function calculateHome() {
   </script>
 </body>
 </html>
-
