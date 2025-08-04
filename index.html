@@ -258,6 +258,59 @@
         border-radius: 12px;
       }
     }
+
+    .visit-time-count-row,
+    .amount-discount-row {
+    display: flex;
+    gap: 16px;
+    justify-content: space-between; /* 頂級容器左右兩端填滿 */
+    flex-wrap: wrap;
+    align-items: flex-end;
+    width: 100%; /* 佔滿父容器 */
+    }
+
+    /* 欄位組允許等寬填滿剩餘空間 */
+    .field-group {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    flex: 1 1 45%;  /* 允許最大約佔45%寬 */
+    min-width: 150px; /* 防止太窄 */
+    margin-bottom: 12px;
+    }
+
+    .field-group label {
+    font-weight: bold;
+    color: #d72660;
+    margin-bottom: 6px;
+    width: 100%;
+    }
+
+    .field-group input,
+    .field-group select {
+    width: 100%;
+    padding: 6px 8px;
+    font-size: 14px;
+    border: 1.5px solid #d72660;
+    border-radius: 6px;
+    box-sizing: border-box;
+    text-align: center;
+    }
+
+    /* 響應式手機版直排 */
+    @media (max-width: 600px) {
+    .visit-time-count-row,
+    .amount-discount-row {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .field-group {
+        flex: none;
+        width: 100%; /* 手機版欄位 100% */
+    }
+    }
+
+    
   </style>
 </head>
 <body>
@@ -403,10 +456,32 @@
     </select>
   </div>
 </div>
-  <label>⏱️ 每次到府時間（分鐘）</label><select id="visitMinutes"><option value="30">30</option><option value="60">60</option></select>
-  <label>🔁 每天幾次</label><input type="number" id="visitsPerDay" min="1" value="1">
-  <label>💰 每半小時金額</label><input type="number" id="pricePerHalfHour" min="0">
-  <label>🎫 折扣</label><input type="number" id="homeDiscount" min="0" max="1" step="0.01" value="1">
+
+<div class="visit-time-count-row">
+    <div class="field-group">
+      <label>⏱️ 每次到府時間（分鐘）</label>
+      <select id="visitMinutes">
+        <option value="30">30</option>
+        <option value="60">60</option>
+      </select>
+    </div>
+    <div class="field-group">
+      <label>🔁 每天幾次</label>
+      <input type="number" id="visitsPerDay" min="1" value="1">
+    </div>
+  </div>
+  
+  <div class="amount-discount-row">
+    <div class="field-group">
+      <label>💰 每半小時金額</label>
+      <input type="number" id="pricePerHalfHour" min="0">
+    </div>
+    <div class="field-group">
+      <label>🎫 折扣</label>
+      <input type="number" id="homeDiscount" min="0" max="1" step="0.01" value="1">
+    </div>
+  </div>
+  
 
   <h3>其他雜項</h3>
   <div class="extra-item">
