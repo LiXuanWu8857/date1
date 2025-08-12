@@ -214,52 +214,35 @@
       flex-wrap: wrap; /* 允許換行 */
     }
      /* === 左側區塊樣式 === */
-     .start-homesection {
+     .start-homesection,
+     .end-homesection{
       display: flex;
       gap: 16px;
       align-items: center;
       flex-wrap: wrap;
     }
     
-    .start-homesection .date-field {
+    .start-homesection .date-field ,
+    .end-homesection .date-field {
       flex: 1 1 40%;
       min-width: 130px;
     }
     
-    .start-homesection .period-field {
+    .start-homesection .period-field ,
+    .end-homesection .period-field {
       flex: 1 1 20%;
       min-width: 100px;
     }
     
     .start-homesection input[type="date"],
     .end-homesection input[type="date"]{
-      width: 90%;
+      width: 100%;
       height: 32px;
       font-size: 14px;   /* 防止 iPhone 點擊放大 */
       padding: 4px 8px;
       border-radius: 6px;
       border: 1.5px solid #d72660;
       box-sizing: border-box;
-    }
-    }
-    
-    
-    /* === 右側區塊樣式 === */
-    .end-homesection {
-      display: flex;
-      gap: 12px;
-      align-items: center;
-      flex-wrap: wrap;
-    }
-    
-    .end-homesection .date-field {
-      flex: 1 1 40%;
-      min-width: 130px;
-    }
-    
-    .end-homesection .period-field {
-      flex: 1 1 20%;
-      min-width: 100px;
     }
     
     .start-homesection .period-field select,
