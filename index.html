@@ -28,11 +28,11 @@
   box-shadow: 0 5px 15px rgba(215, 38, 96, 0.1);
 }
 
-/* 標題內文預設 margin-bottom 過大，直接歸零 */
-.brand-header h1,
-.brand-header h2 {
-  margin-bottom: 0;
-}
+    /* 標題內文預設 margin-bottom 過大，直接歸零 */
+    .brand-header h1,
+    .brand-header h2 {
+      margin-bottom: 0;
+    }
     .brand-title { color: #d72660; font-size: 28px; margin-bottom: 15px; font-weight: bold; }
     .brand-subtitle { color: #d72660; font-size: 18px; margin-bottom: 20px; }
     .brand-description { color: #666; font-size: 14px; margin-bottom: 20px; line-height: 1.8; }
@@ -84,10 +84,10 @@
       margin-top: 0; /* 移除額外間距 */
     }
     
-    .extra-item {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 10px;
+    .extra-item input,
+    .extra-item select {
+      height: 26px;  /* 預設可能是 32px，這裡變矮 */
+      font-size: 12px;
     }
     
     .extra-item .extraName1,
