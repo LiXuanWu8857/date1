@@ -216,7 +216,7 @@
      /* === 左側區塊樣式 === */
      .start-homesection {
       display: flex;
-      gap: 32px;
+      gap: 16px;
       align-items: center;
       flex-wrap: wrap;
     }
@@ -233,11 +233,14 @@
     
     .start-homesection input[type="date"],
     .end-homesection input[type="date"]{
-      width: 80%;
+      width: 100%;
       height: 32px;
-      font-size: 14px;
+      font-size: 14px;   /* 防止 iPhone 點擊放大 */
       padding: 4px 8px;
       border-radius: 6px;
+      border: 1.5px solid #d72660;
+      box-sizing: border-box;
+    }
     }
     
     
