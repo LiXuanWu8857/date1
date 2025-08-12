@@ -84,11 +84,11 @@
       margin-top: 0; /* 移除額外間距 */
     }
     
-    .extra-item input,
-    .extra-item select {
-      height: 26px;  /* 預設可能是 32px，這裡變矮 */
-      font-size: 12px;
-    }
+    .extra-item {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 10px;
+    } 
     
     .extra-item .extraName1,
     .extra-item .extraName2,
@@ -210,14 +210,14 @@
     /* 到府區域調整 */
     .date-period-row {
       display: flex;
-      gap: 32px;
+      gap: 10px;
       flex-wrap: wrap; /* 允許換行 */
     }
      /* === 左側區塊樣式 === */
      .start-homesection,
      .end-homesection{
       display: flex;
-      gap: 16px;
+      gap: 32px;
       align-items: center;
       flex-wrap: wrap;
     }
