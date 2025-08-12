@@ -174,12 +174,15 @@
         border: 1.5px solid #d72660;
         box-sizing: border-box;
     }
+    
     .amount-discount-row {
         display: flex;
         justify-content: center;   /* 整行置中（依需要可調整） */
         align-items: flex-end;     /* 欄位底部對齊 */
         gap: 16px;                 /* 欄位間距 */
         margin-bottom: 18px;
+        flex-wrap: nowrap;
+        width: 100%;
     }
 
     .amount-field,
@@ -190,10 +193,12 @@
     }
 
     .amount-field {
-        width: 350px;     /* 金額欄寬度 */
+        flex:3;
+        min-width: 150px;     /* 金額欄寬度 */
     }
     .discount-field {
-        width: 110px;     /* 折扣欄寬度 */
+        flex:1;
+        min-width: 80px;     /* 折扣欄寬度 */
     }
 
     .amount-field input,
@@ -204,7 +209,7 @@
         border: 1.5px solid #d72660;
         border-radius: 6px;
         box-sizing: border-box;
-        text-align: center;
+        text-align: left;
     }
 
     /* 到府區域調整 */
@@ -247,12 +252,12 @@
     
     .start-homesection .period-field select,
     .end-homesection .period-field select {
-    width: 90%;
-    height: 32px;
-    font-size: 14px;
-    padding: 4px 8px;
-    border-radius: 6px;
-    box-sizing: border-box;
+      width: 90%;
+      height: 32px;
+      font-size: 14px;
+      padding: 4px 8px;
+      border-radius: 6px;
+      box-sizing: border-box;
     }
 
     
