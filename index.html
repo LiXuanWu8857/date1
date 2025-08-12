@@ -129,32 +129,41 @@
     .date-time-row {
         display: flex;
         gap: 10px;
-        flex-wrap: nowrap;  /* 禁止換行 */
+        flex-wrap: wrap; /* 允許換行 */
     }
     
-    /* 開始、結束區塊統一比例配置 */
+    /* 開始、結束住宿區塊配置 */
     .start-section,
     .end-section {
         display: flex;
-        gap: 12px;
+        gap: 16px;
         align-items: center;
-        flex-wrap: nowrap; /* 禁止換行 */
+        flex-wrap: wrap; /* 允許換行 */
     }
     
     .start-section .date-field,
     .end-section .date-field {
-        flex: 2;           /* 日期欄較大 */
-        min-width: 150px;  /* 防止過窄 */
+        flex: 1 1 40%;     /* 日期欄比例 */
+        min-width: 130px;  /* 防止過窄 */
     }
     
     .start-section .time-field,
     .end-section .time-field {
-        flex: 1;           /* 時間欄較小 */
-        min-width: 100px;   /* 防止過窄 */
+        flex: 1 1 20%;     /* 時間欄比例 */
+        min-width: 100px;
     }
     
     .start-section input[type="date"],
-    .end-section input[type="date"],
+    .end-section input[type="date"] {
+        width: 100%;
+        height: 32px;
+        font-size: 16px;   /* 防止 iPhone 點擊放大 */
+        padding: 4px 8px;
+        border-radius: 6px;
+        border: 1.5px solid #d72660;
+        box-sizing: border-box;
+    }
+    
     .start-section input[type="time"],
     .end-section input[type="time"] {
         width: 100%;
