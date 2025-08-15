@@ -283,7 +283,7 @@
   /*到府計算區*/
     .visit-main-row {
     display: flex;
-    gap: 24px; /* 欄與欄間距 */
+    gap: 16px; /* 欄與欄間距 */
     align-items: flex-start;
     flex-wrap: nowrap; /* 禁止換行，兩欄保持並排 */
     }
@@ -292,15 +292,17 @@
     .visit-discount-right {
     display: flex;
     flex-direction: column;
-    gap: 2px;
+    align-items: center;  
     }
 
     .visit-amount-left {
-    width: 200px; /* 固定寬度 */
+        flex:2;
+        min-width: 130px;  
     }
 
     .visit-discount-right {
-    width: 100px; /* 固定寬度 */
+        flex:1;
+        min-width: 100px; 
     }
 
     .field-group label {
@@ -314,7 +316,7 @@
     .field-group input {
       width: 100%;
       height: 38px;           /* 🔹 固定高度 */
-      padding: 0 8px;         /* 內距統一 */
+      padding: 6 8px;         /* 內距統一 */
       font-size: 16px;
       border: 1.5px solid #d72660;
       border-radius: 6px;
@@ -724,5 +726,6 @@ function calculateHome() {
   </script>
 </body>
 </html>
+
 
 
