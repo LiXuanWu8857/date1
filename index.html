@@ -1,734 +1,727 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>風滾草住宿金額計算機</title>
-  <style>
-    @font-face {
-      font-family: 'UDJingXiHei';
-      src: url('https://cdn.jsdelivr.net/gh/font-store/fontstore-webfont/UDJingXiHeiPE1XG30_M.ttf') format('truetype');
-      font-weight: normal;
-      font-style: normal;
-    }
-    body {
-      font-family: 'UDJingXiHei', 'Noto Sans TC', 'Microsoft JhengHei', sans-serif;
-      padding: 20px;
-      background-color: #ffe1ea;
-      margin: 0;
-      line-height: 1.6;
-    }
-    .brand-header {
-    text-align: center;
-    background-color: #fff4fa;
-    padding: 15px 15px; /* 原本上下30px → 改為20px */
-    border-radius: 15px;
-    margin-bottom: 3px; /* 原本15px → 改為10px */
-    border: 2px solid #d72660;
-    box-shadow: 0 5px 15px rgba(215, 38, 96, 0.1);
-  }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>風滾草住宿金額計算機</title>
+<style>
+@font-face {
+font-family: 'UDJingXiHei';
+src: url('https://cdn.jsdelivr.net/gh/font-store/fontstore-webfont/UDJingXiHeiPE1XG30_M.ttf') format('truetype');
+font-weight: normal;
+font-style: normal;
+}
+body {
+font-family: 'UDJingXiHei', 'Noto Sans TC', 'Microsoft JhengHei', sans-serif;
+padding: 20px;
+background-color: #ffe1ea;
+margin: 0;
+line-height: 1.6;
+}
+.brand-header {
+text-align: center;
+background-color: #fff4fa;
+padding: 15px 15px; /* 原本上下30px → 改為20px */
+border-radius: 15px;
+margin-bottom: 3px; /* 原本15px → 改為10px */
+border: 2px solid #d72660;
+box-shadow: 0 5px 15px rgba(215, 38, 96, 0.1);
+}
 
-    /* 標題內文預設 margin-bottom 過大，直接歸零 */
-    .brand-header h1,
-    .brand-header h2 {
-      margin-bottom: 0;
-    }
-    .brand-title { color: #d72660; font-size: 28px; margin-bottom: 15px; font-weight: bold; }
-    .brand-subtitle { color: #d72660; font-size: 18px; margin-bottom: 20px; }
-    .brand-description { color: #666; font-size: 14px; margin-bottom: 20px; line-height: 1.8; }
-    .service-values { display: flex; justify-content: space-around; margin: 20px 0; flex-wrap: wrap; }
-    .value-item { text-align: center; margin: 10px; flex: 1; min-width: 100px; }
-    .value-chinese { color: #d72660; font-weight: bold; font-size: 16px; }
-    .value-english { color: #888; font-size: 12px; font-style: italic; }
-    .calculator-section { background-color: #fff4fa; padding: 25px; border-radius: 15px; border: 2px solid #d72660; box-shadow: 0 5px 15px rgba(215, 38, 96, 0.1);}
-    h2 { color: #d72660; text-align: center; margin-bottom: 25px; }
-    label { display: block; margin-top: 14px; color: #d72660; font-weight: bold; }
-    input, select { width: 100%; padding: 12px; margin-top: 8px; font-size: 16px; border: 1.5px solid #d72660; border-radius: 8px; box-sizing: border-box; font-family: inherit; background-color: #fff; transition: border-color 0.3s;}
-    input:focus, select:focus { outline: none; border-color: #b61a49; box-shadow: 0 0 5px rgba(215, 38, 96, 0.3); }
-    button { margin-top: 20px; padding: 14px; font-size: 16px; background-color: #ff8fb2; color: #fff; border: none; border-radius: 8px; width: 100%; letter-spacing: 1px; transition: all 0.3s; font-family: inherit; cursor: pointer; font-weight: bold;}
-    button:hover { background-color: #d72660; transform: translateY(-2px); box-shadow: 0 4px 8px rgba(215, 38, 96, 0.3);}
-    .clear-btn { background-color: #f7b2d9; color: #d72660; margin-bottom: 15px; margin-top: 10px;}
-    .clear-btn:hover { background-color: #d72660; color: #fff; }
-    .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(215, 38, 96, 0.15);}
-    .modal-content { background-color: #fff4fa; margin: 8% auto; padding: 35px; border: 3px solid #d72660; border-radius: 20px; width: 90%; max-width: 450px; text-align: center; box-shadow: 0 15px 35px rgba(215, 38, 96, 0.2); color: #d72660; font-size: 18px; letter-spacing: 1px; position: relative; }
-    .confirm-btn { margin-top: 25px; width: 70%; background-color: #d72660; color: #fff; font-size: 18px; border-radius: 10px; border: none; padding: 12px 0; font-weight: bold;}
-    .confirm-btn:hover { background-color: #b61a49; }
-    .hidden { display: none; }
-    /*  按鈕直式排列
-    .mode-toggle {
-      display: flex;
-      flex-direction: column;
-      gap: 0px;  按鈕間距 
-      margin-bottom: 15px;  與下方計算機區塊間距 
-    }
-    #stayCalculator,
-    #homeCalculator {
-      margin-top: 0;  移除額外間距 
-    }
-    @media (max-width: 600px) { 
-      .service-values { flex-direction: column; } 
-      .brand-title { font-size: 24px; } 
-      .modal-content { margin: 15% auto; padding: 25px; } 
-    }
-    */
-    .mode-toggle {
-      display: flex;
-      flex-direction: row; /* 改成橫向排列 */
-      justify-content: center; /* 水平置中 */
-      gap: 10px; /* 按鈕之間的間距 */
-      margin-bottom: 15px; /* 與下方計算機區塊間距 */
-    }
-    
-    #stayCalculator,
-    #homeCalculator {
-      margin-top: 0; /* 移除額外間距 */
-    }
-    
-    .extra-item {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 10px;
-    } 
-    
-    .extra-item .extraName1,
-    .extra-item .extraName2,
-    .extra-item .homeExtraName1,
-    .extra-item .homeExtraName2 {
-      flex: 2; /* 名稱欄位寬一點 */
-    }
-    
-    .extra-item .extraAmount1,
-    .extra-item .extraAmount2,
-    .extra-item .homeExtraAmount1,
-    .extra-item .homeExtraAmount2 {
-      flex: 1.5; /* 金額中等寬 */
-    }
-    
-    .extra-item .extraDiscount1,
-    .extra-item .extraDiscount2,
-    .extra-item .homeExtraDiscount1,
-    .extra-item .homeExtraDiscount2 {
-      flex: 1; /* 折扣最窄 */
-    }
-    @media (max-width: 480px) {
-      .extra-item input.extraName1,
-      .extra-item input.extraName2,
-      .extra-item input.homeExtraName1,
-      .extra-item input.homeExtraName2 {
-        min-width: 120px;
-      }
-      .extra-item input.extraAmount1,
-      .extra-item input.extraAmount2,
-      .extra-item input.homeExtraAmount1,
-      .extra-item input.homeExtraAmount2 {
-        min-width: 80px;
-      }
-    }
+/* 標題內文預設 margin-bottom 過大，直接歸零 */
+.brand-header h1,
+.brand-header h2 {
+margin-bottom: 0;
+}
+.brand-title { color: #d72660; font-size: 28px; margin-bottom: 15px; font-weight: bold; }
+.brand-subtitle { color: #d72660; font-size: 18px; margin-bottom: 20px; }
+.brand-description { color: #666; font-size: 14px; margin-bottom: 20px; line-height: 1.8; }
+.service-values { display: flex; justify-content: space-around; margin: 20px 0; flex-wrap: wrap; }
+.value-item { text-align: center; margin: 10px; flex: 1; min-width: 100px; }
+.value-chinese { color: #d72660; font-weight: bold; font-size: 16px; }
+.value-english { color: #888; font-size: 12px; font-style: italic; }
+.calculator-section { background-color: #fff4fa; padding: 25px; border-radius: 15px; border: 2px solid #d72660; box-shadow: 0 5px 15px rgba(215, 38, 96, 0.1);}
+h2 { color: #d72660; text-align: center; margin-bottom: 25px; }
+label { display: block; margin-top: 14px; color: #d72660; font-weight: bold; }
+input, select { width: 100%; padding: 12px; margin-top: 8px; font-size: 16px; border: 1.5px solid #d72660; border-radius: 8px; box-sizing: border-box; font-family: inherit; background-color: #fff; transition: border-color 0.3s;}
+input:focus, select:focus { outline: none; border-color: #b61a49; box-shadow: 0 0 5px rgba(215, 38, 96, 0.3); }
+button { margin-top: 20px; padding: 14px; font-size: 16px; background-color: #ff8fb2; color: #fff; border: none; border-radius: 8px; width: 100%; letter-spacing: 1px; transition: all 0.3s; font-family: inherit; cursor: pointer; font-weight: bold;}
+button:hover { background-color: #d72660; transform: translateY(-2px); box-shadow: 0 4px 8px rgba(215, 38, 96, 0.3);}
+.clear-btn { background-color: #f7b2d9; color: #d72660; margin-bottom: 15px; margin-top: 10px;}
+.clear-btn:hover { background-color: #d72660; color: #fff; }
+.modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(215, 38, 96, 0.15);}
+.modal-content { background-color: #fff4fa; margin: 8% auto; padding: 35px; border: 3px solid #d72660; border-radius: 20px; width: 90%; max-width: 450px; text-align: center; box-shadow: 0 15px 35px rgba(215, 38, 96, 0.2); color: #d72660; font-size: 18px; letter-spacing: 1px; position: relative; }
+.confirm-btn { margin-top: 25px; width: 70%; background-color: #d72660; color: #fff; font-size: 18px; border-radius: 10px; border: none; padding: 12px 0; font-weight: bold;}
+.confirm-btn:hover { background-color: #b61a49; }
+.hidden { display: none; }
+/*  按鈕直式排列
+   .mode-toggle {
+     display: flex;
+     flex-direction: column;
+     gap: 0px;  按鈕間距 
+     margin-bottom: 15px;  與下方計算機區塊間距 
+   }
+   #stayCalculator,
+   #homeCalculator {
+     margin-top: 0;  移除額外間距 
+   }
+   @media (max-width: 600px) { 
+     .service-values { flex-direction: column; } 
+     .brand-title { font-size: 24px; } 
+     .modal-content { margin: 15% auto; padding: 25px; } 
+   }
+   */
+.mode-toggle {
+display: flex;
+flex-direction: row; /* 改成橫向排列 */
+justify-content: center; /* 水平置中 */
+gap: 10px; /* 按鈕之間的間距 */
+margin-bottom: 15px; /* 與下方計算機區塊間距 */
+}
 
-    /*住宿區域調整*/
-    .date-time-row {
-        display: flex;
-        gap: 10px;
-        flex-wrap: wrap; /* 允許換行 */
-    }
-    
-    /* 開始、結束住宿區塊配置 */
-    .start-section,
-    .end-section {
-        display: flex;
-        gap: 45px;
-        align-items: center;
-        flex-wrap: wrap; /* 允許換行 */
-    }
-    
-    .start-section .date-field,
-    .end-section .date-field {
-        flex: 1 1 45%;     /* 日期欄比例 */
-        min-width: 130px;  /* 防止過窄 */
-    }
-    
-    .start-section .time-field,
-    .end-section .time-field {
-        flex: 1 1 20%;     /* 時間欄比例 */
-        min-width: 100px;
-    }
-    
-    .start-section input[type="date"],
-    .end-section input[type="date"] {
-        width: 105%;
-        height: 32px;
-        font-size: 14px;   /* 防止 iPhone 點擊放大 */
-        padding: 4px 8px;
-        border-radius: 6px;
-        border: 1.5px solid #d72660;
-        box-sizing: border-box;
-    }
-    
-    .start-section input[type="time"],
-    .end-section input[type="time"] {
-        width: 80%;
-        height: 32px;
-        font-size: 14px;   /* 防止 iPhone 點擊放大 */
-        padding: 4px 8px;
-        border-radius: 6px;
-        border: 1.5px solid #d72660;
-        box-sizing: border-box;
-    }
-    
-    .amount-discount-row {
-        display: flex;
-        justify-content: center;   /* 整行置中（依需要可調整） */
-        align-items: flex-end;     /* 欄位底部對齊 */
-        gap: 16px;                 /* 欄位間距 */
-        margin-bottom: 18px;
-        flex-wrap: nowrap;
-        width: 100%;
-    }
+#stayCalculator,
+#homeCalculator {
+margin-top: 0; /* 移除額外間距 */
+}
 
-    .amount-field,
-    .discount-field {
-        display: flex;
-        flex-direction: column;
-        align-items: center;          /* 文字＆輸入欄都置中（或用flex-start靠左） */
-    }
+.extra-item {
+display: flex;
+gap: 10px;
+margin-bottom: 10px;
+} 
 
-    .amount-field {
-        flex:2;
-        min-width: 130px;     /* 金額欄寬度 */
-    }
-    .discount-field {
-        flex:1;
-        min-width: 100px;     /* 折扣欄寬度 */
-    }
+.extra-item .extraName1,
+.extra-item .extraName2,
+.extra-item .homeExtraName1,
+.extra-item .homeExtraName2 {
+flex: 2; /* 名稱欄位寬一點 */
+}
 
-    .amount-field input,
-    .discount-field input {
-        width: 100%;
-        padding: 6px 8px;
-        font-size: 16px;
-        border: 1.5px solid #d72660;
-        border-radius: 6px;
-        box-sizing: border-box;
-        text-align: center;
-    }
+.extra-item .extraAmount1,
+.extra-item .extraAmount2,
+.extra-item .homeExtraAmount1,
+.extra-item .homeExtraAmount2 {
+flex: 1.5; /* 金額中等寬 */
+}
 
-    /* 到府區域調整 */
-    .date-period-row {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap; /* 允許換行 */
-    }
-     /* === 左側區塊樣式 === */
-     .start-homesection,
-     .end-homesection{
-      display: flex;
-      gap: 32px;
-      align-items: center;
-      flex-wrap: wrap;
-    }
-    
-    .start-homesection .date-field ,
-    .end-homesection .date-field {
-      flex: 1 1 40%;
-      min-width: 130px;
-    }
-    
-    .start-homesection .period-field ,
-    .end-homesection .period-field {
-      flex: 1 1 20%;
-      min-width: 100px;
-    }
-    
-    .start-homesection input[type="date"],
-    .end-homesection input[type="date"]{
-      width: 100%;
-      height: 32px;
-      font-size: 14px;   /* 防止 iPhone 點擊放大 */
-      padding: 4px 8px;
-      border-radius: 6px;
-      border: 1.5px solid #d72660;
-      box-sizing: border-box;
-    }
-    
-    .start-homesection .period-field select,
-    .end-homesection .period-field select {
-      width: 90%;
-      height: 32px;
-      font-size: 14px;
-      padding: 4px 8px;
-      border-radius: 6px;
-      box-sizing: border-box;
-    }
+.extra-item .extraDiscount1,
+.extra-item .extraDiscount2,
+.extra-item .homeExtraDiscount1,
+.extra-item .homeExtraDiscount2 {
+flex: 1; /* 折扣最窄 */
+}
+@media (max-width: 480px) {
+.extra-item input.extraName1,
+.extra-item input.extraName2,
+.extra-item input.homeExtraName1,
+.extra-item input.homeExtraName2 {
+min-width: 120px;
+}
+.extra-item input.extraAmount1,
+.extra-item input.extraAmount2,
+.extra-item input.homeExtraAmount1,
+.extra-item input.homeExtraAmount2 {
+min-width: 80px;
+}
+}
 
-    
-    .modal-content {
-      width: 90%;
-      max-width: 380px;
-      font-size: 15px;
-      padding: 18px 10px;
-      margin: 15% auto;
-    }
+/*住宿區域調整*/
+.date-time-row {
+display: flex;
+gap: 10px;
+flex-wrap: wrap; /* 允許換行 */
+}
 
-    @media (max-width: 480px) {
-      .modal-content {
-        width: 95%;
-        max-width: 95vw;
-        padding: 8px 2px;
-        margin: 8% auto;
-        font-size: 13px;
-        border-radius: 12px;
-      }
-    }
+/* 開始、結束住宿區塊配置 */
+.start-section,
+.end-section {
+display: flex;
+gap: 45px;
+align-items: center;
+flex-wrap: wrap; /* 允許換行 */
+}
 
-  /*到府計算區*/
-    .visit-main-row {
-    display: flex;
-    gap: 16px; /* 欄與欄間距 */
-    align-items: flex-start;
-    flex-wrap: nowrap; /* 禁止換行，兩欄保持並排 */
-    }
+.start-section .date-field,
+.end-section .date-field {
+flex: 1 1 45%;     /* 日期欄比例 */
+min-width: 130px;  /* 防止過窄 */
+}
 
-    .visit-amount-left,
-    .visit-discount-right {
-    display: flex;
-    flex-direction: column;
-    align-items: center;  
-    }
+.start-section .time-field,
+.end-section .time-field {
+flex: 1 1 20%;     /* 時間欄比例 */
+min-width: 100px;
+}
 
-    .visit-amount-left {
-        flex: 2;
-        min-width: 130px;  
-    }
+.start-section input[type="date"],
+.end-section input[type="date"] {
+width: 105%;
+height: 32px;
+font-size: 14px;   /* 防止 iPhone 點擊放大 */
+padding: 4px 8px;
+border-radius: 6px;
+border: 1.5px solid #d72660;
+box-sizing: border-box;
+}
 
-    .visit-discount-right {
-        flex:1;
-        min-width: 100px;  
-    }
+.start-section input[type="time"],
+.end-section input[type="time"] {
+width: 80%;
+height: 32px;
+font-size: 14px;   /* 防止 iPhone 點擊放大 */
+padding: 4px 8px;
+border-radius: 6px;
+border: 1.5px solid #d72660;
+box-sizing: border-box;
+}
 
-    .field-group label {
-    font-weight: bold;
-    color: #d72660;
-    margin-bottom: 6px;
-    text-align: center;
-    }
+.amount-discount-row {
+display: flex;
+justify-content: center;   /* 整行置中（依需要可調整） */
+align-items: flex-end;     /* 欄位底部對齊 */
+gap: 16px;                 /* 欄位間距 */
+margin-bottom: 18px;
+flex-wrap: nowrap;
+width: 100%;
+}
 
-    .field-group select,
-    .field-group input {
-      width: 105%;
-      padding: 1px 8px;         /* 內距統一 */
-      font-size: 16px;
-      border: 1.5px solid #d72660;
-      border-radius: 6px;
-      box-sizing: border-box;
-      text-align: center;
-    }
-    
+.amount-field,
+.discount-field {
+display: flex;
+flex-direction: column;
+align-items: center;          /* 文字＆輸入欄都置中（或用flex-start靠左） */
+}
 
-  </style>
+.amount-field {
+flex:2;
+min-width: 130px;     /* 金額欄寬度 */
+}
+.discount-field {
+flex:1;
+min-width: 100px;     /* 折扣欄寬度 */
+}
+
+.amount-field input,
+.discount-field input {
+width: 100%;
+padding: 6px 8px;
+font-size: 16px;
+border: 1.5px solid #d72660;
+border-radius: 6px;
+box-sizing: border-box;
+text-align: center;
+}
+
+/* 到府區域調整 */
+.date-period-row {
+display: flex;
+gap: 10px;
+flex-wrap: wrap; /* 允許換行 */
+}
+/* === 左側區塊樣式 === */
+.start-homesection,
+.end-homesection{
+display: flex;
+gap: 32px;
+align-items: center;
+flex-wrap: wrap;
+}
+
+.start-homesection .date-field ,
+.end-homesection .date-field {
+flex: 1 1 40%;
+min-width: 130px;
+}
+
+.start-homesection .period-field ,
+.end-homesection .period-field {
+flex: 1 1 20%;
+min-width: 100px;
+}
+
+.start-homesection input[type="date"],
+.end-homesection input[type="date"]{
+width: 100%;
+height: 32px;
+font-size: 14px;   /* 防止 iPhone 點擊放大 */
+padding: 4px 8px;
+border-radius: 6px;
+border: 1.5px solid #d72660;
+box-sizing: border-box;
+}
+
+.start-homesection .period-field select,
+.end-homesection .period-field select {
+width: 90%;
+height: 32px;
+font-size: 14px;
+padding: 4px 8px;
+border-radius: 6px;
+box-sizing: border-box;
+}
+
+
+.modal-content {
+width: 90%;
+max-width: 380px;
+font-size: 15px;
+padding: 18px 10px;
+margin: 15% auto;
+}
+
+@media (max-width: 480px) {
+.modal-content {
+width: 95%;
+max-width: 95vw;
+padding: 8px 2px;
+margin: 8% auto;
+font-size: 13px;
+border-radius: 12px;
+}
+}
+
+/*到府計算區*/
+.visit-main-row {
+display: flex;
+gap: 24px; /* 欄與欄間距 */
+align-items: flex-start;
+flex-wrap: nowrap; /* 禁止換行，兩欄保持並排 */
+}
+
+.visit-amount-left,
+.visit-discount-right {
+display: flex;
+flex-direction: column;
+gap: 2px;
+}
+
+.visit-amount-left {
+width: 200px; /* 固定寬度 */
+}
+
+.visit-discount-right {
+width: 100px; /* 固定寬度 */
+}
+
+.field-group label {
+font-weight: bold;
+color: #d72660;
+margin-bottom: 6px;
+text-align: center;
+}
+
+.field-group select,
+.field-group input {
+width: 100%;
+height: 38px;           /* 🔹 固定高度 */
+padding: 0 8px;         /* 內距統一 */
+font-size: 16px;
+border: 1.5px solid #d72660;
+border-radius: 6px;
+box-sizing: border-box;
+text-align: center;
+-webkit-appearance: none; /* 移除 iOS 預設樣式 */
+-moz-appearance: none;
+appearance: none;
+}
+
+
+</style>
 </head>
 <body>
-  <div class="brand-header">
-    <h1 class="brand-title">🌿 風滾草工作室</h1>
-    <p class="brand-subtitle">寵物住宿金額計算機</p>
-    <!--
-    <p class="brand-description">我們是一群因為愛動物而以動物福利作為首要出發點的團隊，<br>以不打不罵且站在寵物角度去理解他們的需求
+<div class="brand-header">
+<h1 class="brand-title">🌿 風滾草工作室</h1>
+<p class="brand-subtitle">寵物住宿金額計算機</p>
+<!--
+   <p class="brand-description">我們是一群因為愛動物而以動物福利作為首要出發點的團隊，<br>以不打不罵且站在寵物角度去理解他們的需求
 <br>零恐懼的互動模式讓每個毛小孩都愛上照護的哥哥姊姊！</p>
 
-    <div class="service-values"><div class="value-item"><div class="value-chinese">陪伴</div><div class="value-english">Accompany</div></div><div class="value-item"><div class="value-chinese">專業</div><div class="value-english">Professional</div></div><div class="value-item"><div class="value-chinese">耐心</div><div class="value-english">Patience</div></div></div>
-    <p style="color: #d72660; font-weight: bold; font-size: 16px; margin-top: 15px;">「成為毛孩第二信任的人」</p>
-    -->
-  </div>
+   <div class="service-values"><div class="value-item"><div class="value-chinese">陪伴</div><div class="value-english">Accompany</div></div><div class="value-item"><div class="value-chinese">專業</div><div class="value-english">Professional</div></div><div class="value-item"><div class="value-chinese">耐心</div><div class="value-english">Patience</div></div></div>
+   <p style="color: #d72660; font-weight: bold; font-size: 16px; margin-top: 15px;">「成為毛孩第二信任的人」</p>
+   -->
+</div>
 
-  <!-- 模式切換 -->
-  <div class="mode-toggle">
-    <button id="stayModeBtn" class="active" onclick="switchMode('stay')">住宿模式</button>
-    <button id="homeModeBtn" onclick="switchMode('home')">到府模式</button>
-  </div>
+<!-- 模式切換 -->
+<div class="mode-toggle">
+<button id="stayModeBtn" class="active" onclick="switchMode('stay')">住宿模式</button>
+<button id="homeModeBtn" onclick="switchMode('home')">到府模式</button>
+</div>
 
-  <!-- 住宿計算機 
+<!-- 住宿計算機 
 
-  <div id="stayCalculator" class="calculator-section">
-    <button class="clear-btn" onclick="clearAll()">🧹 清除所有欄位</button>
-    <h2>🏠 住宿金額計算機</h2>
-    <label>🗓️ 開始日期</label><input type="date" id="startDate">
-    <label>🕒 開始時間</label><input type="time" id="startTime" value="15:00">
-    <label>🗓️ 結束日期</label><input type="date" id="endDate">
-    <label>🕒 結束時間</label><input type="time" id="endTime" value="11:00">
-    <label>💰 每日金額</label><input type="number" id="rate" min="0" placeholder="例如：1200">
-    <label>🎫 折扣</label><input type="number" id="discount" min="0" max="1" step="0.01" value="1">
-    <button onclick="calculate()">🧮 計算費用</button>
-  </div>
+ <div id="stayCalculator" class="calculator-section">
+   <button class="clear-btn" onclick="clearAll()">🧹 清除所有欄位</button>
+   <h2>🏠 住宿金額計算機</h2>
+   <label>🗓️ 開始日期</label><input type="date" id="startDate">
+   <label>🕒 開始時間</label><input type="time" id="startTime" value="15:00">
+   <label>🗓️ 結束日期</label><input type="date" id="endDate">
+   <label>🕒 結束時間</label><input type="time" id="endTime" value="11:00">
+   <label>💰 每日金額</label><input type="number" id="rate" min="0" placeholder="例如：1200">
+   <label>🎫 折扣</label><input type="number" id="discount" min="0" max="1" step="0.01" value="1">
+   <button onclick="calculate()">🧮 計算費用</button>
+ </div>
 
-  <!-- 到府計算機 
-  <div id="homeCalculator" class="calculator-section hidden">
-    <button class="clear-btn" onclick="clearHome()">🧹 清除所有欄位</button>
-    <h2>🐾 到府金額計算機</h2>
-    <label>🗓️ 開始日期</label><input type="date" id="homeStartDate">
-    <label>☀️ 開始時段</label><select id="homeStartPeriod"><option value="am">上午</option><option value="noon">中午</option><option value="pm">下午</option></select>
-    <label>🗓️ 結束日期</label><input type="date" id="homeEndDate">
-    <label>🌇 結束時段</label><select id="homeEndPeriod"><option value="am">上午</option><option value="noon">中午</option><option value="pm">下午</option></select>
-    <label>⏱️ 每次到府時間（分鐘）</label><select id="visitMinutes"><option value="30">30</option><option value="60">60</option></select>
-    <label>🔁 每天幾次</label><input type="number" id="visitsPerDay" min="1" value="1">
-    <label>💰 每半小時金額</label><input type="number" id="pricePerHalfHour" min="0">
-    <label>🎫 折扣</label><input type="number" id="homeDiscount" min="0" max="1" step="0.01" value="1">
-    <button onclick="calculateHome()">🧮 計算費用</button>
-  </div>
-  -->
-  
-  <!-- 住宿計算機 -->
+ <!-- 到府計算機 
+ <div id="homeCalculator" class="calculator-section hidden">
+   <button class="clear-btn" onclick="clearHome()">🧹 清除所有欄位</button>
+   <h2>🐾 到府金額計算機</h2>
+   <label>🗓️ 開始日期</label><input type="date" id="homeStartDate">
+   <label>☀️ 開始時段</label><select id="homeStartPeriod"><option value="am">上午</option><option value="noon">中午</option><option value="pm">下午</option></select>
+   <label>🗓️ 結束日期</label><input type="date" id="homeEndDate">
+   <label>🌇 結束時段</label><select id="homeEndPeriod"><option value="am">上午</option><option value="noon">中午</option><option value="pm">下午</option></select>
+   <label>⏱️ 每次到府時間（分鐘）</label><select id="visitMinutes"><option value="30">30</option><option value="60">60</option></select>
+   <label>🔁 每天幾次</label><input type="number" id="visitsPerDay" min="1" value="1">
+   <label>💰 每半小時金額</label><input type="number" id="pricePerHalfHour" min="0">
+   <label>🎫 折扣</label><input type="number" id="homeDiscount" min="0" max="1" step="0.01" value="1">
+   <button onclick="calculateHome()">🧮 計算費用</button>
+ </div>
+ -->
+
+<!-- 住宿計算機 -->
 <div id="stayCalculator" class="calculator-section">
-  <button class="clear-btn" onclick="clearAll()">🧹 清除所有欄位</button>
+<button class="clear-btn" onclick="clearAll()">🧹 清除所有欄位</button>
 <h2>🏠 住宿金額計算機</h2>
 
 <!-- 開始 -->
 <div class="date-time-row start-section">
-  <div class="date-field">
-    <label>🗓️ 開始日期</label>
-    <input type="date" id="startDate">
-  </div>
-  <div class="time-field">
-    <label>🕒 開始時間</label>
-    <input type="time" id="startTime" value="00:00">
-  </div>
+<div class="date-field">
+<label>🗓️ 開始日期</label>
+<input type="date" id="startDate">
+</div>
+<div class="time-field">
+<label>🕒 開始時間</label>
+<input type="time" id="startTime" value="00:00">
+</div>
 </div>
 
 <!-- 結束 -->
 <div class="date-time-row end-section">
-  <div class="date-field">
-    <label>🗓️ 結束日期</label>
-    <input type="date" id="endDate">
-  </div>
-  <div class="time-field">
-    <label>🕒 結束時間</label>
-    <input type="time" id="endTime" value="00:00">
-  </div>
+<div class="date-field">
+<label>🗓️ 結束日期</label>
+<input type="date" id="endDate">
+</div>
+<div class="time-field">
+<label>🕒 結束時間</label>
+<input type="time" id="endTime" value="00:00">
+</div>
 </div>
 
 <div class="amount-discount-row">
-    <div class="amount-field">
-      <label>💰 每日金額</label>
-      <input type="number" id="rate" min="0"  inputmode="decimal" placeholder="">
-    </div>
-    <div class="discount-field">
-      <label>🎫 折扣</label>
-      <input type="number" id="discount" min="0" max="1" step="0.01" inputmode="decimal" value="1">
-    </div>
+<div class="amount-field">
+<label>💰 每日金額</label>
+<input type="number" id="rate" min="0"  inputmode="decimal" placeholder="">
 </div>
-  
-  <h3>其他雜項</h3>
-  <div class="extra-item">
-    <input type="text" id="extraName1" class="extraName1" placeholder="名稱">
-    <input type="number" id="extraAmount1" class="extraAmount1" min="0" inputmode="decimal" placeholder="金額">
-    <input type="number" id="extraDiscount1" class="extraDiscount1" min="0" max="1" step="0.01" value="1" inputmode="decimal" placeholder="折數">
-  </div>
-  <div class="extra-item">
-    <input type="text" id="extraName2" class="extraName2" placeholder="名稱">
-    <input type="number" id="extraAmount2" class="extraAmount2" min="0" inputmode="decimal" placeholder="金額">
-    <input type="number" id="extraDiscount2" class="extraDiscount2" min="0" max="1" step="0.01" value="1" inputmode="decimal" placeholder="折數">
-  </div>
-  <button onclick="calculate()">🧮 計算費用</button>
+<div class="discount-field">
+<label>🎫 折扣</label>
+<input type="number" id="discount" min="0" max="1" step="0.01" inputmode="decimal" value="1">
+</div>
+</div>
+
+<h3>其他雜項</h3>
+<div class="extra-item">
+<input type="text" id="extraName1" class="extraName1" placeholder="名稱">
+<input type="number" id="extraAmount1" class="extraAmount1" min="0" inputmode="decimal" placeholder="金額">
+<input type="number" id="extraDiscount1" class="extraDiscount1" min="0" max="1" step="0.01" value="1" inputmode="decimal" placeholder="折數">
+</div>
+<div class="extra-item">
+<input type="text" id="extraName2" class="extraName2" placeholder="名稱">
+<input type="number" id="extraAmount2" class="extraAmount2" min="0" inputmode="decimal" placeholder="金額">
+<input type="number" id="extraDiscount2" class="extraDiscount2" min="0" max="1" step="0.01" value="1" inputmode="decimal" placeholder="折數">
+</div>
+<button onclick="calculate()">🧮 計算費用</button>
 </div>
 
 <!-- 到府計算機 -->
 <div id="homeCalculator" class="calculator-section hidden">
-  <button class="clear-btn" onclick="clearHome()">🧹 清除所有欄位</button>
-  <h2>🐾 到府金額計算機</h2>
- <!--<label>🗓️ 開始日期</label><input type="date" id="homeStartDate">
-  <label>☀️ 開始時段</label><select id="homeStartPeriod"><option value="am">上午</option><option value="noon">中午</option><option value="pm">下午</option></select>
-  <label>🗓️ 結束日期</label><input type="date" id="homeEndDate">
-  <label>🌇 結束時段</label><select id="homeEndPeriod"><option value="am">上午</option><option value="noon">中午</option><option value="pm">下午</option></select>
-  -->
+<button class="clear-btn" onclick="clearHome()">🧹 清除所有欄位</button>
+<h2>🐾 到府金額計算機</h2>
+<!--<label>🗓️ 開始日期</label><input type="date" id="homeStartDate">
+ <label>☀️ 開始時段</label><select id="homeStartPeriod"><option value="am">上午</option><option value="noon">中午</option><option value="pm">下午</option></select>
+ <label>🗓️ 結束日期</label><input type="date" id="homeEndDate">
+ <label>🌇 結束時段</label><select id="homeEndPeriod"><option value="am">上午</option><option value="noon">中午</option><option value="pm">下午</option></select>
+ -->
 
-  <!-- 開始 -->
-  <div class="date-period-row start-homesection">
-    <div class="date-field">
-      <label>🗓️ 開始日期</label>
-      <input type="date" id="homeStartDate">
-    </div>
-    <div class="period-field">
-      <label>☀️ 開始時段</label>
-      <select id="homeStartPeriod">
-        <option value="am">上午</option>
-        <option value="noon">中午</option>
-        <option value="pm">下午</option>
-      </select>
-    </div>
-  </div>
-  
-  <!-- 結束 -->
-  <div class="date-period-row end-homesection">
-    <div class="date-field">
-      <label>🗓️ 結束日期</label>
-      <input type="date" id="homeEndDate">
-    </div>
-    <div class="period-field">
-      <label>🌇 結束時段</label>
-      <select id="homeEndPeriod">
-        <option value="am">上午</option>
-        <option value="noon">中午</option>
-        <option value="pm">下午</option>
-      </select>
-    </div>
-  </div>
-
-
-  <div class="visit-main-row">
-    <div class="visit-amount-left">
-      <div class="field-group">
-        <label>⏱️ 每次到府時間（分鐘）</label>
-        <select id="visitMinutes">
-          <option value="30">30</option>
-          <option value="60">60</option>
-        </select>
-      </div>
-      <div class="field-group">
-        <label>💰 每半小時金額</label>
-        <input type="number" id="pricePerHalfHour" inputmode="decimal" min="0">
-      </div>
-    </div>
-  
-    <div class="visit-discount-right">
-      <div class="field-group">
-        <label>🔁 次數</label>
-        <input type="number" id="visitsPerDay" min="1" inputmode="decimal" value="1">
-      </div>
-      <div class="field-group">
-        <label>🎫 折扣</label>
-        <input type="number" id="homeDiscount" min="0" max="1" step="0.01" inputmode="decimal" value="1">
-      </div>
-    </div>
-  </div>
-  
-
-  <h3>其他雜項</h3>
-  <div class="extra-item">
-    <input type="text" id="homeExtraName1" class="homeExtraName1" placeholder="名稱">
-    <input type="number" id="homeExtraAmount1" class="homeExtraAmount1" min="0" inputmode="decimal" placeholder="金額">
-    <input type="number" id="homeExtraDiscount1" class="homeExtraDiscount1" min="0" max="1" step="0.01" inputmode="decimal" value="1" placeholder="折數">
-  </div>
-  <div class="extra-item">
-    <input type="text" id="homeExtraName2" class="homeExtraName2" placeholder="名稱">
-    <input type="number" id="homeExtraAmount2" class="homeExtraAmount2" min="0" inputmode="decimal" placeholder="金額">
-    <input type="number" id="homeExtraDiscount2" class="homeExtraDiscount2" min="0" max="1" step="0.01" value="1" inputmode="decimal" placeholder="折數">
-  </div>
-
-  <button onclick="calculateHome()">🧮 計算費用</button>
+<!-- 開始 -->
+<div class="date-period-row start-homesection">
+<div class="date-field">
+<label>🗓️ 開始日期</label>
+<input type="date" id="homeStartDate">
 </div>
-  <!-- Modal 彈出視窗 -->
-  <div id="modal" class="modal">
-    <div class="modal-content" id="modalContent">
-      <div id="modalResultText"></div>
-      <button class="confirm-btn" onclick="shareScreenshot()">📤 分享截圖</button>
-      <button class="confirm-btn" onclick="closeModal()">確認</button>
-    </div>
-  </div>
+<div class="period-field">
+<label>☀️ 開始時段</label>
+<select id="homeStartPeriod">
+<option value="am">上午</option>
+<option value="noon">中午</option>
+<option value="pm">下午</option>
+</select>
+</div>
+</div>
 
-  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
-  <script>
-    function setDefaultDates() {
-  const today = new Date();
-  const yyyy = today.getFullYear();
-  const mm = String(today.getMonth() + 1).padStart(2, "0");
-  const dd = String(today.getDate()).padStart(2, "0");
+<!-- 結束 -->
+<div class="date-period-row end-homesection">
+<div class="date-field">
+<label>🗓️ 結束日期</label>
+<input type="date" id="homeEndDate">
+</div>
+<div class="period-field">
+<label>🌇 結束時段</label>
+<select id="homeEndPeriod">
+<option value="am">上午</option>
+<option value="noon">中午</option>
+<option value="pm">下午</option>
+</select>
+</div>
+</div>
 
-  // 住宿預設：開始日 = 前一天，結束日 = 當天
-  const prevDay = new Date(today);
-  prevDay.setDate(today.getDate() - 1);
-  const prevY = prevDay.getFullYear();
-  const prevM = String(prevDay.getMonth() + 1).padStart(2, "0");
-  const prevD = String(prevDay.getDate()).padStart(2, "0");
-  document.getElementById("startDate").value = `${prevY}-${prevM}-${prevD}`;
-  document.getElementById("endDate").value = `${yyyy}-${mm}-${dd}`;
 
-  // 到府預設：開始日 = 結束日 = 當天
-  document.getElementById("homeStartDate").value = `${yyyy}-${mm}-${dd}`;
-  document.getElementById("homeEndDate").value = `${yyyy}-${mm}-${dd}`;
+<div class="visit-main-row">
+<div class="visit-amount-left">
+<div class="field-group">
+<label>⏱️ 每次到府時間（分鐘）</label>
+<select id="visitMinutes">
+<option value="30">30</option>
+<option value="60">60</option>
+</select>
+</div>
+<div class="field-group">
+<label>💰 每半小時金額</label>
+<input type="number" id="pricePerHalfHour" inputmode="decimal" min="0">
+</div>
+</div>
+
+<div class="visit-discount-right">
+<div class="field-group">
+        <label>🔁 次數</label>
+<input type="number" id="visitsPerDay" min="1" inputmode="decimal" value="1">
+</div>
+<div class="field-group">
+<label>🎫 折扣</label>
+<input type="number" id="homeDiscount" min="0" max="1" step="0.01" inputmode="decimal" value="1">
+</div>
+</div>
+</div>
+
+
+<h3>其他雜項</h3>
+<div class="extra-item">
+<input type="text" id="homeExtraName1" class="homeExtraName1" placeholder="名稱">
+<input type="number" id="homeExtraAmount1" class="homeExtraAmount1" min="0" inputmode="decimal" placeholder="金額">
+<input type="number" id="homeExtraDiscount1" class="homeExtraDiscount1" min="0" max="1" step="0.01" inputmode="decimal" value="1" placeholder="折數">
+</div>
+<div class="extra-item">
+<input type="text" id="homeExtraName2" class="homeExtraName2" placeholder="名稱">
+<input type="number" id="homeExtraAmount2" class="homeExtraAmount2" min="0" inputmode="decimal" placeholder="金額">
+<input type="number" id="homeExtraDiscount2" class="homeExtraDiscount2" min="0" max="1" step="0.01" value="1" inputmode="decimal" placeholder="折數">
+</div>
+
+<button onclick="calculateHome()">🧮 計算費用</button>
+</div>
+<!-- Modal 彈出視窗 -->
+<div id="modal" class="modal">
+<div class="modal-content" id="modalContent">
+<div id="modalResultText"></div>
+<button class="confirm-btn" onclick="shareScreenshot()">📤 分享截圖</button>
+<button class="confirm-btn" onclick="closeModal()">確認</button>
+</div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<script>
+function setDefaultDates() {
+const today = new Date();
+const yyyy = today.getFullYear();
+const mm = String(today.getMonth() + 1).padStart(2, "0");
+const dd = String(today.getDate()).padStart(2, "0");
+
+// 住宿預設：開始日 = 前一天，結束日 = 當天
+const prevDay = new Date(today);
+prevDay.setDate(today.getDate() - 1);
+const prevY = prevDay.getFullYear();
+const prevM = String(prevDay.getMonth() + 1).padStart(2, "0");
+const prevD = String(prevDay.getDate()).padStart(2, "0");
+document.getElementById("startDate").value = `${prevY}-${prevM}-${prevD}`;
+document.getElementById("endDate").value = `${yyyy}-${mm}-${dd}`;
+
+// 到府預設：開始日 = 結束日 = 當天
+document.getElementById("homeStartDate").value = `${yyyy}-${mm}-${dd}`;
+document.getElementById("homeEndDate").value = `${yyyy}-${mm}-${dd}`;
 }
-    window.onload=setDefaultDates;
+window.onload=setDefaultDates;
 
 /*
-    function calculate(){const t=document.getElementById("startDate").value,e=document.getElementById("startTime").value,a=document.getElementById("endDate").value,n=document.getElementById("endTime").value,o=parseFloat(document.getElementById("rate").value),d=parseFloat(document.getElementById("discount").value);if(!t||!a||!e||!n||isNaN(o)||isNaN(d)||o<0||d<=0)return showModal("⚠️ 請填寫所有欄位並輸入正確數值");const c=new Date(`${t}T${e}`),l=new Date(`${a}T${n}`);if(l<=c)return showModal("⚠️ 結束時間必須晚於開始時間");const u=l-c,s=1e3*60*60*24,r=Math.floor(u/s),m=u%s/36e5;let i=0;i=m>12?1:m>0?.5:0;const y=r+i,h=y*o,v=h*d;showModal(`🐾 <b style="color:#d72660;">住宿計算結果</b><br><br>🛏️ 共 <b>${y}</b> 天（含加成 <b>${i}</b> 天）<br><br>💰 原價 <b>${h.toLocaleString()}</b> 元<br><br>🎫 折扣後總金額：<br><b style="font-size:22px;color:#d72660">${v.toLocaleString()}</b> 元<br><br><small style="color:#888;">謝謝您選擇風滾草工作室 🌿</small>`);}*/
+   function calculate(){const t=document.getElementById("startDate").value,e=document.getElementById("startTime").value,a=document.getElementById("endDate").value,n=document.getElementById("endTime").value,o=parseFloat(document.getElementById("rate").value),d=parseFloat(document.getElementById("discount").value);if(!t||!a||!e||!n||isNaN(o)||isNaN(d)||o<0||d<=0)return showModal("⚠️ 請填寫所有欄位並輸入正確數值");const c=new Date(`${t}T${e}`),l=new Date(`${a}T${n}`);if(l<=c)return showModal("⚠️ 結束時間必須晚於開始時間");const u=l-c,s=1e3*60*60*24,r=Math.floor(u/s),m=u%s/36e5;let i=0;i=m>12?1:m>0?.5:0;const y=r+i,h=y*o,v=h*d;showModal(`🐾 <b style="color:#d72660;">住宿計算結果</b><br><br>🛏️ 共 <b>${y}</b> 天（含加成 <b>${i}</b> 天）<br><br>💰 原價 <b>${h.toLocaleString()}</b> 元<br><br>🎫 折扣後總金額：<br><b style="font-size:22px;color:#d72660">${v.toLocaleString()}</b> 元<br><br><small style="color:#888;">謝謝您選擇風滾草工作室 🌿</small>`);}*/
 
 function calculate() {
-  const t = document.getElementById("startDate").value;
-  const e = document.getElementById("startTime").value;
-  const a = document.getElementById("endDate").value;
-  const n = document.getElementById("endTime").value;
-  const o = parseFloat(document.getElementById("rate").value);
-  const d = parseFloat(document.getElementById("discount").value);
+const t = document.getElementById("startDate").value;
+const e = document.getElementById("startTime").value;
+const a = document.getElementById("endDate").value;
+const n = document.getElementById("endTime").value;
+const o = parseFloat(document.getElementById("rate").value);
+const d = parseFloat(document.getElementById("discount").value);
 
-  if (!t || !a || !e || !n || isNaN(o) || isNaN(d) || o < 0 || d <= 0)
-    return showModal("⚠️ 請填寫所有欄位並輸入正確數值");
+if (!t || !a || !e || !n || isNaN(o) || isNaN(d) || o < 0 || d <= 0)
+return showModal("⚠️ 請填寫所有欄位並輸入正確數值");
 
-  const c = new Date(`${t}T${e}`);
-  const l = new Date(`${a}T${n}`);
-  if (l <= c) return showModal("⚠️ 結束時間必須晚於開始時間");
+const c = new Date(`${t}T${e}`);
+const l = new Date(`${a}T${n}`);
+if (l <= c) return showModal("⚠️ 結束時間必須晚於開始時間");
 
-  const u = l - c;
-  const s = 1000 * 60 * 60 * 24;
-  const r = Math.floor(u / s);
-  const m = (u % s) / 3600000;
-  const addDay = m > 12 ? 1 : (m > 0 ? 0.5 : 0);
-  const totalDays = r + addDay;
+const u = l - c;
+const s = 1000 * 60 * 60 * 24;
+const r = Math.floor(u / s);
+const m = (u % s) / 3600000;
+const addDay = m > 12 ? 1 : (m > 0 ? 0.5 : 0);
+const totalDays = r + addDay;
 
-  const basePrice = totalDays * o;
-  const totalBase = basePrice * d;
+const basePrice = totalDays * o;
+const totalBase = basePrice * d;
 
-  // 雜項明細
-  let extrasText = "";
-  const extra1Name = document.getElementById("extraName1").value.trim();
-  const extra1Amount = parseFloat(document.getElementById("extraAmount1").value) || 0;
-  const extra1Discount = parseFloat(document.getElementById("extraDiscount1").value) || 1;
-  const extra1Total = extra1Amount * extra1Discount;
-  if (extra1Name) extrasText += `${extra1Name}：${extra1Total.toLocaleString()} 元<br>`;
+// 雜項明細
+let extrasText = "";
+const extra1Name = document.getElementById("extraName1").value.trim();
+const extra1Amount = parseFloat(document.getElementById("extraAmount1").value) || 0;
+const extra1Discount = parseFloat(document.getElementById("extraDiscount1").value) || 1;
+const extra1Total = extra1Amount * extra1Discount;
+if (extra1Name) extrasText += `${extra1Name}：${extra1Total.toLocaleString()} 元<br>`;
 
-  const extra2Name = document.getElementById("extraName2").value.trim();
-  const extra2Amount = parseFloat(document.getElementById("extraAmount2").value) || 0;
-  const extra2Discount = parseFloat(document.getElementById("extraDiscount2").value) || 1;
-  const extra2Total = extra2Amount * extra2Discount;
-  if (extra2Name) extrasText += `${extra2Name}：${extra2Total.toLocaleString()} 元<br>`;
+const extra2Name = document.getElementById("extraName2").value.trim();
+const extra2Amount = parseFloat(document.getElementById("extraAmount2").value) || 0;
+const extra2Discount = parseFloat(document.getElementById("extraDiscount2").value) || 1;
+const extra2Total = extra2Amount * extra2Discount;
+if (extra2Name) extrasText += `${extra2Name}：${extra2Total.toLocaleString()} 元<br>`;
 
-  const finalPrice = totalBase + extra1Total + extra2Total;
+const finalPrice = totalBase + extra1Total + extra2Total;
 
-  showModal(`
-    🏠 <b style="color:#d72660;">住宿計算結果</b><br><br>
-    🛏️ 共 <b>${totalDays}</b> 天（含加成 <b>${addDay}</b> 天）<br><br>
-    💰 原價 <b>${basePrice.toLocaleString()}</b> 元<br>
-    🎫 折扣後金額：<b>${totalBase.toLocaleString()}</b> 元<br><br>
-    ${extrasText ? `<b>雜項：</b><br>${extrasText}<br>` : ""}
-    <b style="font-size:22px;color:#d72660">${finalPrice.toLocaleString()}</b> 元<br><br>
-    <small style="color:#888;">謝謝您選擇風滾草工作室 🌿</small>
-  `);
+showModal(`
+   🏠 <b style="color:#d72660;">住宿計算結果</b><br><br>
+   🛏️ 共 <b>${totalDays}</b> 天（含加成 <b>${addDay}</b> 天）<br><br>
+   💰 原價 <b>${basePrice.toLocaleString()}</b> 元<br>
+   🎫 折扣後金額：<b>${totalBase.toLocaleString()}</b> 元<br><br>
+   ${extrasText ? `<b>雜項：</b><br>${extrasText}<br>` : ""}
+   <b style="font-size:22px;color:#d72660">${finalPrice.toLocaleString()}</b> 元<br><br>
+   <small style="color:#888;">謝謝您選擇風滾草工作室 🌿</small>
+ `);
 }
 
-    /*function calculateHome(){const t=document.getElementById("homeStartDate").value,e=document.getElementById("homeEndDate").value,a=document.getElementById("homeStartPeriod").value,n=document.getElementById("homeEndPeriod").value,o=parseInt(document.getElementById("visitMinutes").value),d=parseInt(document.getElementById("visitsPerDay").value),c=parseFloat(document.getElementById("pricePerHalfHour").value),l=parseFloat(document.getElementById("homeDiscount").value);if(!t||!e||isNaN(o)||isNaN(d)||isNaN(c)||isNaN(l))return showModal("⚠️ 請填寫所有欄位並輸入正確數值");const u=new Date(t),s=new Date(e);if(s<u)return showModal("⚠️ 結束日期不可早於開始日期");let r=(s-u)/864e5;r+="pm"===a&&"am"===n?0:"am"===a&&"pm"===n?1:.5;const m=o*d*r,i=m/30*c,y=i*l;showModal(`🏠 <b style="color:#d72660;">到府計算結果</b><br><br>📅 共 <b>${r}</b> 天，平均每日 ${d} 次<br>⏱️ 每次 ${o} 分鐘，共 ${m} 分鐘<br><br>💰 原價 <b>${i.toLocaleString()}</b> 元<br><br>🎫 折扣後總金額：<br><b style="font-size:22px;color:#d72660">${y.toLocaleString()}</b> 元<br><br><small style="color:#888;">謝謝您選擇風滾草工作室 🌿</small>`);}*/
-    
+/*function calculateHome(){const t=document.getElementById("homeStartDate").value,e=document.getElementById("homeEndDate").value,a=document.getElementById("homeStartPeriod").value,n=document.getElementById("homeEndPeriod").value,o=parseInt(document.getElementById("visitMinutes").value),d=parseInt(document.getElementById("visitsPerDay").value),c=parseFloat(document.getElementById("pricePerHalfHour").value),l=parseFloat(document.getElementById("homeDiscount").value);if(!t||!e||isNaN(o)||isNaN(d)||isNaN(c)||isNaN(l))return showModal("⚠️ 請填寫所有欄位並輸入正確數值");const u=new Date(t),s=new Date(e);if(s<u)return showModal("⚠️ 結束日期不可早於開始日期");let r=(s-u)/864e5;r+="pm"===a&&"am"===n?0:"am"===a&&"pm"===n?1:.5;const m=o*d*r,i=m/30*c,y=i*l;showModal(`🏠 <b style="color:#d72660;">到府計算結果</b><br><br>📅 共 <b>${r}</b> 天，平均每日 ${d} 次<br>⏱️ 每次 ${o} 分鐘，共 ${m} 分鐘<br><br>💰 原價 <b>${i.toLocaleString()}</b> 元<br><br>🎫 折扣後總金額：<br><b style="font-size:22px;color:#d72660">${y.toLocaleString()}</b> 元<br><br><small style="color:#888;">謝謝您選擇風滾草工作室 🌿</small>`);}*/
+
 function calculateHome() {
-  const t = document.getElementById("homeStartDate").value;
-  const e = document.getElementById("homeEndDate").value;
-  const a = document.getElementById("homeStartPeriod").value;
-  const n = document.getElementById("homeEndPeriod").value;
-  const o = parseInt(document.getElementById("visitMinutes").value);
-  const d = parseInt(document.getElementById("visitsPerDay").value);
-  const c = parseFloat(document.getElementById("pricePerHalfHour").value);
-  const l = parseFloat(document.getElementById("homeDiscount").value);
-  if (!t || !e || isNaN(o) || isNaN(d) || isNaN(c) || isNaN(l))
-    return showModal("⚠️ 請填寫所有欄位並輸入正確數值");
+const t = document.getElementById("homeStartDate").value;
+const e = document.getElementById("homeEndDate").value;
+const a = document.getElementById("homeStartPeriod").value;
+const n = document.getElementById("homeEndPeriod").value;
+const o = parseInt(document.getElementById("visitMinutes").value);
+const d = parseInt(document.getElementById("visitsPerDay").value);
+const c = parseFloat(document.getElementById("pricePerHalfHour").value);
+const l = parseFloat(document.getElementById("homeDiscount").value);
+if (!t || !e || isNaN(o) || isNaN(d) || isNaN(c) || isNaN(l))
+return showModal("⚠️ 請填寫所有欄位並輸入正確數值");
 
-  const u = new Date(t);
-  const s = new Date(e);
-  if (s < u) return showModal("⚠️ 結束日期不可早於開始日期");
+const u = new Date(t);
+const s = new Date(e);
+if (s < u) return showModal("⚠️ 結束日期不可早於開始日期");
 
-  let dayCount = (s - u) / 86400000;
-  dayCount += (a === "pm" && n === "am") ? 0 : (a === "am" && n === "pm") ? 1 : 0.5;
+let dayCount = (s - u) / 86400000;
+dayCount += (a === "pm" && n === "am") ? 0 : (a === "am" && n === "pm") ? 1 : 0.5;
 
-  const totalMinutes = o * d * dayCount;
-  const basePrice = totalMinutes / 30 * c * l;
+const totalMinutes = o * d * dayCount;
+const basePrice = totalMinutes / 30 * c * l;
 
-  // 雜項明細
-  let extrasText = "";
-  const extra1Name = document.getElementById("homeExtraName1").value.trim();
-  const extra1Amount = parseFloat(document.getElementById("homeExtraAmount1").value) || 0;
-  const extra1Discount = parseFloat(document.getElementById("homeExtraDiscount1").value) || 1;
-  const extra1Total = extra1Amount * extra1Discount;
-  if (extra1Name) extrasText += `${extra1Name}：${extra1Total.toLocaleString()} 元<br>`;
+// 雜項明細
+let extrasText = "";
+const extra1Name = document.getElementById("homeExtraName1").value.trim();
+const extra1Amount = parseFloat(document.getElementById("homeExtraAmount1").value) || 0;
+const extra1Discount = parseFloat(document.getElementById("homeExtraDiscount1").value) || 1;
+const extra1Total = extra1Amount * extra1Discount;
+if (extra1Name) extrasText += `${extra1Name}：${extra1Total.toLocaleString()} 元<br>`;
 
-  const extra2Name = document.getElementById("homeExtraName2").value.trim();
-  const extra2Amount = parseFloat(document.getElementById("homeExtraAmount2").value) || 0;
-  const extra2Discount = parseFloat(document.getElementById("homeExtraDiscount2").value) || 1;
-  const extra2Total = extra2Amount * extra2Discount;
-  if (extra2Name) extrasText += `${extra2Name}：${extra2Total.toLocaleString()} 元<br>`;
+const extra2Name = document.getElementById("homeExtraName2").value.trim();
+const extra2Amount = parseFloat(document.getElementById("homeExtraAmount2").value) || 0;
+const extra2Discount = parseFloat(document.getElementById("homeExtraDiscount2").value) || 1;
+const extra2Total = extra2Amount * extra2Discount;
+if (extra2Name) extrasText += `${extra2Name}：${extra2Total.toLocaleString()} 元<br>`;
 
-  const finalPrice = basePrice + extra1Total + extra2Total;
+const finalPrice = basePrice + extra1Total + extra2Total;
 
-  showModal(`
-    🐾 <b style="color:#d72660;">到府計算結果</b><br><br>
-    📅 共 <b>${dayCount}</b> 天，平均每日 ${d} 次<br>
-    ⏱️ 每次 ${o} 分鐘，共 ${totalMinutes} 分鐘<br><br>
-    🎫 折扣後金額：<b>${basePrice.toLocaleString()}</b> 元<br><br>
-    ${extrasText ? `<b>雜項：</b><br>${extrasText}<br>` : ""}
-    <b style="font-size:22px;color:#d72660">${finalPrice.toLocaleString()}</b> 元<br><br>
-    <small style="color:#888;">謝謝您選擇風滾草工作室 🌿</small>
-  `);
+showModal(`
+   🐾 <b style="color:#d72660;">到府計算結果</b><br><br>
+   📅 共 <b>${dayCount}</b> 天，平均每日 ${d} 次<br>
+   ⏱️ 每次 ${o} 分鐘，共 ${totalMinutes} 分鐘<br><br>
+   🎫 折扣後金額：<b>${basePrice.toLocaleString()}</b> 元<br><br>
+   ${extrasText ? `<b>雜項：</b><br>${extrasText}<br>` : ""}
+   <b style="font-size:22px;color:#d72660">${finalPrice.toLocaleString()}</b> 元<br><br>
+   <small style="color:#888;">謝謝您選擇風滾草工作室 🌿</small>
+ `);
 }
 
-    function showModal(t){document.getElementById("modalResultText").innerHTML=t,document.getElementById("modal").style.display="block",document.body.style.overflow="hidden";}
-    function closeModal(){document.getElementById("modal").style.display="none",document.body.style.overflow="auto";}
-    function clearAll(){
-  document.getElementById("startDate").value="",
-  document.getElementById("startTime").value="00:00",
-  document.getElementById("endDate").value="", 
-  document.getElementById("endTime").value="00:00",
-  document.getElementById("rate").value="",
-  document.getElementById("discount").value="1",
-  document.getElementById("extraName1").value = "";
-  document.getElementById("extraAmount1").value = "";  
-  document.getElementById("extraDiscount1").value = 1;
-  document.getElementById("extraName2").value = "";
-  document.getElementById("extraAmount2").value = "";  
-  document.getElementById("extraDiscount2").value = 1;
-    }
-
-    function clearHome() {
-  document.getElementById("homeStartDate").value = "";
-  document.getElementById("homeStartPeriod").value = "am";
-  document.getElementById("homeEndDate").value = "";
-  document.getElementById("homeEndPeriod").value = "am";
-  document.getElementById("visitMinutes").value = "30";
-  document.getElementById("visitsPerDay").value = 1;
-  document.getElementById("pricePerHalfHour").value = "";
-  document.getElementById("homeDiscount").value = 1;
-  document.getElementById("homeExtraName1").value = "";
-  document.getElementById("homeExtraAmount1").value = "";  document.getElementById("homeExtraDiscount1").value = 1;
-  document.getElementById("homeExtraName2").value = "";
-  document.getElementById("homeExtraAmount2").value = "";  document.getElementById("homeExtraDiscount2").value = 1;
+function showModal(t){document.getElementById("modalResultText").innerHTML=t,document.getElementById("modal").style.display="block",document.body.style.overflow="hidden";}
+function closeModal(){document.getElementById("modal").style.display="none",document.body.style.overflow="auto";}
+function clearAll(){
+document.getElementById("startDate").value="",
+document.getElementById("startTime").value="00:00",
+document.getElementById("endDate").value="", 
+document.getElementById("endTime").value="00:00",
+document.getElementById("rate").value="",
+document.getElementById("discount").value="1",
+document.getElementById("extraName1").value = "";
+document.getElementById("extraAmount1").value = "";  
+document.getElementById("extraDiscount1").value = 1;
+document.getElementById("extraName2").value = "";
+document.getElementById("extraAmount2").value = "";  
+document.getElementById("extraDiscount2").value = 1;
 }
-            document.getElementById("modal").onclick=function(t){t.target===document.getElementById("modal")&&closeModal();}
-    window.onkeydown=function(t){"Escape"===t.key&&closeModal();}
-    function switchMode(t){"stay"===t?(stayModeBtn.classList.add("active"),homeModeBtn.classList.remove("active"),stayCalculator.classList.remove("hidden"),homeCalculator.classList.add("hidden")):(stayModeBtn.classList.remove("active"),homeModeBtn.classList.add("active"),stayCalculator.classList.add("hidden"),homeCalculator.classList.remove("hidden"));}
-    
-    // --- 截圖並分享 ---
-    async function shareScreenshot() {
-      const shareBtn = document.querySelector('#modalContent button[onclick="shareScreenshot()"]');
-      const confirmBtn = document.querySelector('#modalContent button[onclick="closeModal()"]');
-    
-      // 暫時隱藏按鈕
-      shareBtn.style.display = 'none';
-      confirmBtn.style.display = 'none';
-    
-      // 截圖
-      const target = document.getElementById('modalContent');
-      const canvas = await html2canvas(target, { scale: 2, backgroundColor: null });
-      const dataUrl = canvas.toDataURL('image/png');
-    
-      // 恢復按鈕顯示
-      shareBtn.style.display = '';
-      confirmBtn.style.display = '';
-    
-      // 分享或下載
-      const res = await fetch(dataUrl);
-      const blob = await res.blob();
-      const file = new File([blob], 'result.png', { type: 'image/png' });
-      if (navigator.canShare && navigator.canShare({ files: [file] })) {
-        await navigator.share({ files: [file]});
-      } else {
-        const link = document.createElement('a');
-        link.href = dataUrl;
-        link.download = 'result.png';
-        link.click();
-        alert('您的裝置不支援直接分享，已下載截圖');
-      }
-    }
-  </script>
+
+function clearHome() {
+document.getElementById("homeStartDate").value = "";
+document.getElementById("homeStartPeriod").value = "am";
+document.getElementById("homeEndDate").value = "";
+document.getElementById("homeEndPeriod").value = "am";
+document.getElementById("visitMinutes").value = "30";
+document.getElementById("visitsPerDay").value = 1;
+document.getElementById("pricePerHalfHour").value = "";
+document.getElementById("homeDiscount").value = 1;
+document.getElementById("homeExtraName1").value = "";
+document.getElementById("homeExtraAmount1").value = "";  document.getElementById("homeExtraDiscount1").value = 1;
+document.getElementById("homeExtraName2").value = "";
+document.getElementById("homeExtraAmount2").value = "";  document.getElementById("homeExtraDiscount2").value = 1;
+}
+document.getElementById("modal").onclick=function(t){t.target===document.getElementById("modal")&&closeModal();}
+window.onkeydown=function(t){"Escape"===t.key&&closeModal();}
+function switchMode(t){"stay"===t?(stayModeBtn.classList.add("active"),homeModeBtn.classList.remove("active"),stayCalculator.classList.remove("hidden"),homeCalculator.classList.add("hidden")):(stayModeBtn.classList.remove("active"),homeModeBtn.classList.add("active"),stayCalculator.classList.add("hidden"),homeCalculator.classList.remove("hidden"));}
+
+// --- 截圖並分享 ---
+async function shareScreenshot() {
+const shareBtn = document.querySelector('#modalContent button[onclick="shareScreenshot()"]');
+const confirmBtn = document.querySelector('#modalContent button[onclick="closeModal()"]');
+
+// 暫時隱藏按鈕
+shareBtn.style.display = 'none';
+confirmBtn.style.display = 'none';
+
+// 截圖
+const target = document.getElementById('modalContent');
+const canvas = await html2canvas(target, { scale: 2, backgroundColor: null });
+const dataUrl = canvas.toDataURL('image/png');
+
+// 恢復按鈕顯示
+shareBtn.style.display = '';
+confirmBtn.style.display = '';
+
+// 分享或下載
+const res = await fetch(dataUrl);
+const blob = await res.blob();
+const file = new File([blob], 'result.png', { type: 'image/png' });
+if (navigator.canShare && navigator.canShare({ files: [file] })) {
+await navigator.share({ files: [file]});
+} else {
+const link = document.createElement('a');
+link.href = dataUrl;
+link.download = 'result.png';
+link.click();
+alert('您的裝置不支援直接分享，已下載截圖');
+}
+}
+</script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
 
